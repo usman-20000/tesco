@@ -56,18 +56,22 @@ function Home() {
                 </div>
             </div>
             <div className="action-buttons flex flex-row items-center justify-center gap-4">
-                <button className="flex flex-col items-center justify-center text-[12px] text-black font-medium ">
-                    <div className="flex flex-col items-center justify-center text-[12px] text-[#347928] border-1 border-[#347928] rounded-full h-10 w-10">
-                        <FontAwesomeIcon icon={faAdd} className='text-[#347928] text-[18px]' />
-                    </div>
-                    Deposit
-                </button>
-                <button className="flex flex-col items-center justify-center text-[12px] text-black font-medium ">
-                    <div className="flex flex-col items-center justify-center text-[12px] text-[#347928] border-1 border-[#347928] rounded-full h-10 w-10">
-                        <FontAwesomeIcon icon={faMoneyBillTransfer} className='text-[#347928] text-[18px]' />
-                    </div>
-                    Withdraw
-                </button>
+                <a href='/deposit' className='no-underline'>
+                    <button className="flex flex-col items-center justify-center text-[12px] text-black font-medium ">
+                        <div className="flex flex-col items-center justify-center text-[12px] text-[#347928] border-1 border-[#347928] rounded-full h-10 w-10">
+                            <FontAwesomeIcon icon={faAdd} className='text-[#347928] text-[18px]' />
+                        </div>
+                        Deposit
+                    </button>
+                </a>
+                <a href='/withdraw' className='no-underline'>
+                    <button className="flex flex-col items-center justify-center text-[12px] text-black font-medium ">
+                        <div className="flex flex-col items-center justify-center text-[12px] text-[#347928] border-1 border-[#347928] rounded-full h-10 w-10">
+                            <FontAwesomeIcon icon={faMoneyBillTransfer} className='text-[#347928] text-[18px]' />
+                        </div>
+                        Withdraw
+                    </button>
+                </a>
             </div>
             <div className='flex flex-col items-center w-full border rounded-md p-4 mt-4'>
                 <div className='flex flex-row items-center justify-between w-full'>

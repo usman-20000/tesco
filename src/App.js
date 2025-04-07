@@ -9,13 +9,15 @@ import BottomNav from './components/BottomNav';
 import Home from './Pages/Home';
 import PrivateRoute from './components/PrivateRoute';
 import NotFound from './Pages/NotFound';
+import Deposit from './Pages/Deposit';
+import Withdraw from './Pages/Withdraw';
 
 function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/",];
-  const showBottomNavRoutes = ["/home", "/","*"];
+  const showHeaderRoutes = ["/home", "/","/deposit", "/withdraw"];
+  const showBottomNavRoutes = ["/home", "/", "*"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
 
@@ -28,6 +30,8 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="/deposit" element={<Deposit />} />
+            <Route path="/withdraw" element={<Withdraw />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
