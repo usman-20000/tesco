@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Header.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faCircleInfo, faCircleQuestion, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faCircleInfo, faCircleQuestion, faQuestion, faQuestionCircle, faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
 
@@ -58,12 +58,20 @@ function Header() {
           <button className="close-sidebar" onClick={closeSidebar}>
             &times;
           </button>
-          <nav className="sidebar-nav flex flex-col items-center">
-            <a href="/" onClick={closeSidebar}>Home</a>
+          <nav className="sidebar-nav flex flex-col items-center w-full">
+            <div className='flex flex-row items-center w-full border-b pb-2'>
+              <FontAwesomeIcon icon={faUser} className='text-gray-300 border overflow-hidden rounded-full h-[30px] w-[30px]' />
+              <div className='flex flex-col ml-2 w-[80%]'>
+                <span className='text-[#347928] text-[14px] font-bold'>Welcom Back!</span>
+                <span className='text-gray-500 text-[10px] font-medium'>John Doe</span>
+              </div>
+            </div>
+            <a href="/" className='mt-4' onClick={closeSidebar}>Home</a>
+            <a href="/invite" onClick={closeSidebar}>Invite</a>
             <a href="/my-team" onClick={closeSidebar}>My Team</a>
             <a href="/team-detail" onClick={closeSidebar}>Details</a>
             <button
-              className="logout-button"
+              className="w-full text-left text-red-500"
               onClick={handleLogout}
             >
               Logout

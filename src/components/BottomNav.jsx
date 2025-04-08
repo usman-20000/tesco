@@ -15,7 +15,7 @@ function BottomNav() {
                 <FontAwesomeIcon icon={faBookAtlas} />
                 <span>Portfolio</span>
             </NavLink>
-            <NavLink to="/team" className="nav-item" activeClassName="active">
+            <NavLink to="/my-team" className="nav-item" activeClassName="active">
                 <FontAwesomeIcon icon={faPeopleGroup} />
                 <span>Team</span>
             </NavLink>

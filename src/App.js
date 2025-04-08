@@ -15,13 +15,16 @@ import WithdrawSuccess from './Pages/WithdrawSuccess';
 import Team from './Pages/Team';
 import MyTeam from './Pages/MyTeam';
 import TeamDetail from './Pages/TeamDetail';
+import Detail from './Pages/Detail';
+import Invest from './Pages/Invest';
+import InvestSuccess from './Pages/InvestSuccess';
 
 function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/","/deposit", "/withdraw", "/team", "/my-team", "/team-detail" ];
-  const showBottomNavRoutes = ["/home", "/", "/team", "/my-team", "/team-detail"];
+  const showHeaderRoutes = ["/home", "/","/deposit", "/withdraw", "/invite", "/my-team", "/team-detail" ];
+  const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
 
@@ -34,12 +37,16 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/withdraw" element={<Withdraw />} />
             <Route path="/withdraw-sucess" element={<WithdrawSuccess />} />
-            <Route path="/team" element={<Team />} />
+            <Route path="/invite" element={<Team />} />
             <Route path="/my-team" element={<MyTeam/>} />
             <Route path="/team-detail" element={<TeamDetail/>} />
+            <Route path="/detail" element={<Detail/>} />
+            <Route path="/invest" element={<Invest/>} />
+            <Route path="/invest-success" element={<InvestSuccess/>} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
