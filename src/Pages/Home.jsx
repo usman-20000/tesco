@@ -10,8 +10,14 @@ function Home() {
     };
 
     const [showBalance, setShowBalance] = React.useState(false);
+    const [showDeposit, setShowDeposit] = React.useState(false);
+
     const toggleBalanceVisibility = () => {
         setShowBalance(!showBalance);
+    };
+
+    const toggleDepositVisibility = () => {
+        setShowDeposit(!showDeposit);
     };
 
     const investmentOffers = [
@@ -41,11 +47,24 @@ function Home() {
     return (
         <div className="home-container md:mb-4 mb-[25%] md:mt-[5%] mt-[15%]">
             {/* User Info Section */}
-            <div className='w-[70px] h-[3px] bg-[#347928] mb-[2%] rounded-md' />
-            <div className="user-info flex flex-col items-center">
-                <p>Total Balance</p>
+            <div className='flex flex-row items-center justify-between mb-4 w-[70%] mt-4'>
+            <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
+                <p className='text-black text-[16px]'>Deposit Balance</p>
                 <div className='flex flex-row items-center justify-between'>
-                    <h3 className='text-[#347928] font-bold'>PKR: {showBalance ? user.balance : '****'}</h3>
+                    <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showDeposit ? user.balance : '****'}</h3>
+                    <button onClick={toggleDepositVisibility} className='ml-2'>
+                        {showDeposit ? (
+                            <FontAwesomeIcon icon={faEyeSlash} className='text-[#347928] text-[14px]' />
+                        ) : (
+                            <FontAwesomeIcon icon={faEye} className='text-[#347928] text-[14px]' />
+                        )}
+                    </button>
+                </div>
+            </div>
+            <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
+                <p className='text-black text-[1px]'>&nbsp; Total Balance &nbsp;</p>
+                <div className='flex flex-row items-center justify-between'>
+                    <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showBalance ? user.balance : '****'}</h3>
                     <button onClick={toggleBalanceVisibility} className='ml-2'>
                         {showBalance ? (
                             <FontAwesomeIcon icon={faEyeSlash} className='text-[#347928] text-[14px]' />
@@ -54,6 +73,7 @@ function Home() {
                         )}
                     </button>
                 </div>
+            </div>
             </div>
             <div className="action-buttons flex flex-row items-center justify-center gap-4">
                 <a href='/deposit' className='no-underline'>

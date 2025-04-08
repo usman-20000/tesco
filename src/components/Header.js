@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Header.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo, faCircleQuestion, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faCircleInfo, faCircleQuestion, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
 
@@ -42,12 +42,13 @@ function Header() {
           </button>
 
           {/* Center: Dashboard Text */}
-          <h1 className="header-title ml-[20%] mt-2">Dashboard</h1>
+          <h1 className="header-title ml-[20px] mt-2 w-[160px] text-left">John Doe</h1>
         </div>
 
         {/* Right: Help Button */}
         <button onClick={() => alert('Help clicked!')}>
-          <FontAwesomeIcon icon={faCircleQuestion} className='text-[#347928] text-[24px]' />
+          <span className='bg-red-500 text-[10px] text-white rounded-full h-[14px] w-[14px] z-20 position-absolute mb-[20px] items-center flex flex-col justify-center ml-[12px]'>2</span>
+          <FontAwesomeIcon icon={faBell} className='text-white text-[24px]' />
         </button>
       </div>
 
@@ -59,6 +60,8 @@ function Header() {
           </button>
           <nav className="sidebar-nav flex flex-col items-center">
             <a href="/" onClick={closeSidebar}>Home</a>
+            <a href="/my-team" onClick={closeSidebar}>My Team</a>
+            <a href="/team-detail" onClick={closeSidebar}>Details</a>
             <button
               className="logout-button"
               onClick={handleLogout}
