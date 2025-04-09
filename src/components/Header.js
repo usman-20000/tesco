@@ -46,10 +46,10 @@ function Header() {
         </div>
 
         {/* Right: Help Button */}
-        <button onClick={() => alert('Help clicked!')}>
+        <a href='/notification'>
           <span className='bg-red-500 text-[10px] text-white rounded-full h-[14px] w-[14px] z-20 position-absolute mb-[20px] items-center flex flex-col justify-center ml-[12px]'>2</span>
           <FontAwesomeIcon icon={faBell} className='text-white text-[24px]' />
-        </button>
+        </a>
       </div>
 
       {/* Sidebar */}

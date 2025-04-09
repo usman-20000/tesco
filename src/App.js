@@ -18,13 +18,16 @@ import TeamDetail from './Pages/TeamDetail';
 import Detail from './Pages/Detail';
 import Invest from './Pages/Invest';
 import InvestSuccess from './Pages/InvestSuccess';
+import Progress from './Pages/Progress';
+import Notification from './Pages/Notification';
+import ForgotPassword from './Pages/ForgotPassword';
 
 function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/","/deposit", "/withdraw", "/invite", "/my-team", "/team-detail" ];
-  const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail"];
+  const showHeaderRoutes = ["/home", "/","/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress" ];
+  const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail", "/progress"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
 
@@ -35,6 +38,7 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
@@ -47,6 +51,8 @@ function App() {
             <Route path="/detail" element={<Detail/>} />
             <Route path="/invest" element={<Invest/>} />
             <Route path="/invest-success" element={<InvestSuccess/>} />
+            <Route path="/progress" element={<Progress/>} />
+            <Route path="/notification" element={<Notification/>} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
