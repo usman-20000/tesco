@@ -21,12 +21,13 @@ import InvestSuccess from './Pages/InvestSuccess';
 import Progress from './Pages/Progress';
 import Notification from './Pages/Notification';
 import ForgotPassword from './Pages/ForgotPassword';
+import Dashboard from './Pages/Dashboard';
 
 function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/","/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress" ];
+  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress"];
   const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail", "/progress"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
@@ -46,13 +47,14 @@ function App() {
             <Route path="/withdraw" element={<Withdraw />} />
             <Route path="/withdraw-sucess" element={<WithdrawSuccess />} />
             <Route path="/invite" element={<Team />} />
-            <Route path="/my-team" element={<MyTeam/>} />
-            <Route path="/team-detail" element={<TeamDetail/>} />
-            <Route path="/detail" element={<Detail/>} />
-            <Route path="/invest" element={<Invest/>} />
-            <Route path="/invest-success" element={<InvestSuccess/>} />
-            <Route path="/progress" element={<Progress/>} />
-            <Route path="/notification" element={<Notification/>} />
+            <Route path="/my-team" element={<MyTeam />} />
+            <Route path="/team-detail" element={<TeamDetail />} />
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/invest/:id" element={<Invest />} />
+            <Route path="/invest-success" element={<InvestSuccess />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/notification" element={<Notification />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -44,7 +44,8 @@ function SignIn() {
             if (!response.ok) {
                 throw new Error(data.message || 'Registration failed!');
             }
-            localStorage.setItem('id', data.id); // Store the user ID in local storage
+            localStorage.setItem('id', data.data.id); 
+            // console.log('data:', data, data.data.id);
             navigate('/');
             console.log('Server Response:', data);
         } catch (error) {

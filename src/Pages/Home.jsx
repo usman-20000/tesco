@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faClose, faEye, faEyeSlash, faMoneyBill, faMoneyBill1, faMoneyBillTransfer, faMoneyCheckDollar, faSliders } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { fetchData, investmentOffers } from '../Assets/Data';
 
 function Home() {
 
     const navigate = useNavigate();
 
-    const user = {
-        name: 'John Doe',
-        balance: 5000,
-    };
-
     const [showBalance, setShowBalance] = React.useState(false);
     const [showDeposit, setShowDeposit] = React.useState(false);
+    const [userData, setUserData] = React.useState([]);
+
+    const fetchUserData = async()=>{
+        const data = await fetchData();
+        console.log('data:', data?.name);
+        setUserData(data);
+    }
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     const toggleBalanceVisibility = () => {
         setShowBalance(!showBalance);
@@ -24,30 +30,6 @@ function Home() {
         setShowDeposit(!showDeposit);
     };
 
-    const investmentOffers = [
-        {
-            id: 1,
-            image: 'https://st.depositphotos.com/1000128/1949/i/450/depositphotos_19492613-stock-photo-gold-ingots.jpg',
-            name: 'Gold Investment',
-            days: '30 Days',
-            percentage: '10%',
-        },
-        {
-            id: 2,
-            image: 'https://img.freepik.com/premium-vector/silver-award-sport-medal-winners-with-red-ribbon-second-place-trophy-honor-badges_599062-3670.jpg?semt=ais_hybrid&w=740',
-            name: 'Silver Investment',
-            days: '60 Days',
-            percentage: '20%',
-        },
-        {
-            id: 3,
-            image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
-            name: 'Platinum Investment',
-            days: '90 Days',
-            percentage: '30%',
-        },
-    ];
-
     return (
         <div className="home-container md:mb-4 mb-[25%] md:mt-[5%] mt-[15%]">
             {/* User Info Section */}
@@ -55,7 +37,7 @@ function Home() {
                 <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
                     <p className='text-black text-[16px]'>Deposit Balance</p>
                     <div className='flex flex-row items-center justify-between'>
-                        <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showDeposit ? user.balance : '****'}</h3>
+                        <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showDeposit ? userData.deposit : '****'}</h3>
                         <button onClick={toggleDepositVisibility} className='ml-2'>
                             {showDeposit ? (
                                 <FontAwesomeIcon icon={faEyeSlash} className='text-[#347928] text-[14px]' />
@@ -68,7 +50,7 @@ function Home() {
                 <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
                     <p className='text-black text-[1px]'>&nbsp; Total Balance &nbsp;</p>
                     <div className='flex flex-row items-center justify-between'>
-                        <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showBalance ? user.balance : '****'}</h3>
+                        <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showBalance ? userData?.balance : '****'}</h3>
                         <button onClick={toggleBalanceVisibility} className='ml-2'>
                             {showBalance ? (
                                 <FontAwesomeIcon icon={faEyeSlash} className='text-[#347928] text-[14px]' />
@@ -100,16 +82,16 @@ function Home() {
             <div className='flex flex-col items-center w-full border rounded-md p-4 mt-4'>
                 <div className='flex flex-row items-center justify-between w-full'>
                     <div className='flex flex-col items-center'>
-                        <span className='text-[14px] font-bold text-[#347928]'>0</span>
+                        <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalDeposit}</span>
                         <span className='text-[12px] font-bold text-black'>Total Deposit</span>
                     </div>
                     <div className='flex flex-col items-center'>
-                        <span className='text-[14px] font-bold text-[#347928]'>0</span>
+                        <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalInvest}</span>
                         <span className='text-[12px] font-bold text-black'>Total Invest</span>
                     </div>
                 </div>
                 <div className='flex flex-col items-center'>
-                    <span className='text-[14px] font-bold text-[#347928]'>0</span>
+                    <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalWithdraw}</span>
                     <span className='text-[12px] font-bold text-black'>Total Withdraw</span>
                 </div>
             </div>
@@ -121,16 +103,15 @@ function Home() {
                 </div>
                 <div className="offers-grid">
                     {investmentOffers.map((offer) => (
-                        <div onClick={() => navigate('/detail')} key={offer.id} className="offer-card">
-                            <img src={offer.image} alt={offer.name} className="offer-image" />
+                        <div onClick={() => navigate(`/invest/${offer.id}`)} key={offer.id} className="offer-card">
+                            <img src={offer.image} alt={offer?.name} className="offer-image" />
                             <div className='w-[50%]'>
-                                <h2>{offer.name}</h2>
-                                <p
-                                >{offer.days}</p>
+                                <h2>investment:{offer.amount}</h2>
+                                <p>Expire Plan:{offer.days}D</p>
                             </div>
-                            <div className='w-[30%]'>
-                                <p className='text-[#347928] font-bold'>{offer.percentage} / day</p>
-                                <span className='bg-[#77B254] p-1 pl-2 text-[10px] text-white rounded-md'>Buy Now</span>
+                            <div className='w-[30%] flex flex-col items-center justify-end h-full'>
+                                <span className='text-[#347928] font-bold text-[10px]'>Daily Profit:{offer.profit}</span>
+                                <span className='bg-[#77B254] p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full'>Open Now</span>
                             </div>
                         </div>
                     ))}
