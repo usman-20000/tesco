@@ -1,89 +1,245 @@
-import { faBank, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import {
+    faAdd,
+    faBank,
+    faEdit,
+    faEye,
+    faEyeSlash
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './Deposit.css';
 import Modal from "../components/ModalShow";
 import { useNavigate } from "react-router-dom";
+import { BaseUrl, maskString } from "../Assets/Data";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Withdraw() {
-
     const navigate = useNavigate();
 
     const [showBalance, setShowBalance] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [haveBank, setHaveBank] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [availableBalance, setAvailableBalance] = useState(0);
+    const [withdrawAmount, setWithdrawAmount] = useState('');
     const [formData, setFormData] = useState({
+        id: '',
+        userId: '',
         bankName: '',
         accountHolderName: '',
-        accountNumber: '',
+        accountNumber: ''
     });
-    const [pkr, setPkr] = useState(0);
-    const user = {
-        balance: 10000,
-    };
+
+    const userId = localStorage.getItem('id');
+
+    // Toggle balance visibility
     const toggleBalanceVisibility = () => {
         setShowBalance(!showBalance);
     };
 
-    const handlePkrChange = (e) => {
-        const { value } = e.target;
-        setPkr(value);
-    }
+    // Handle changes for input fields
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    // Handle amount input
+    const handleAmountChange = (e) => {
+        setWithdrawAmount(e.target.value);
+    };
 
-    const handleSubmit = (e) => {
+    // Fetch bank & balance data
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const [bankRes, userRes] = await Promise.all([
+                fetch(`${BaseUrl}/bank/${userId}`),
+                fetch(`${BaseUrl}/register/${userId}`)
+            ]);
+
+            const bankData = await bankRes.json();
+            const userData = await userRes.json();
+
+            setAvailableBalance(userData?.balance || 0);
+
+            if (bankRes.ok && bankData) {
+                setHaveBank(true);
+                setFormData({
+                    id: bankData._id,
+                    userId: bankData.userId,
+                    bankName: bankData.bankName,
+                    accountHolderName: bankData.accountName,
+                    accountNumber: bankData.accountNumber
+                });
+            } else {
+                setHaveBank(false);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Upload or update bank details
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        // Add logic to handle form submission
+        setLoading(true);
+
+        const data1 = {
+            userId: userId,
+            bankName: formData.bankName,
+            accountName: formData.accountHolderName,
+            accountNumber: formData.accountNumber
+        }
+        const method = haveBank ? 'PATCH' : 'POST';
+        const end = haveBank ? `bank/${formData.id}` : 'bank';
+        const endpoint = `${BaseUrl}/${end}`;
+
+        try {
+            const res = await fetch(endpoint, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data1)
+            });
+
+            if (res.ok) {
+                alert(`Bank details ${haveBank ? "updated" : "uploaded"} successfully`);
+                fetchData();
+            } else {
+                const error = await res.json();
+                alert(error.message || 'Something went wrong');
+            }
+        } catch (err) {
+            console.error("Bank submission error:", err);
+            alert('Failed to submit bank details');
+        } finally {
+            setLoading(false);
+            setIsModalOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const handleWithdraw = async () => {
+        const id = localStorage.getItem('id');
+        const endpoint = `${BaseUrl}/withdraw`; // Replace with your actual endpoint
+        setLoading(true);
+
+        if(withdrawAmount > availableBalance){
+            alert('Withdraw amount exceeds available balance');
+            setLoading(false);
+            return;
+        }
+        if(withdrawAmount <= 0){
+            alert('Withdraw amount must be greater than zero');
+            setLoading(false);
+            return;
+        }
+        if(withdrawAmount === ''){
+            alert('Withdraw amount cannot be empty');
+            setLoading(false);
+            return;
+        }
+
+        const data = {
+            sender: id,
+            receiver: 'admin',
+            amount: withdrawAmount,
+        };
+
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+                const responseData = await res.json();
+                console.log('Withdrawal created successfully:', responseData);
+                alert('Withdrawal successful!');
+                navigate('/withdraw-sucess'); // Redirect to success page
+            } else {
+                const error = await res.text();
+                console.error('Error creating withdrawal:', error);
+                alert('Failed to create withdrawal');
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('Failed to create withdrawal');
+        }finally{
+            setLoading(false);
+        }
     };
 
 
-    return (
+    return loading ? (
+        <LoadingSpinner />
+    ) : (
         <div className="flex flex-col items-center mt-4 w-full">
             <h2 className="text-[28px] font-bold">Total Balance</h2>
-            <div className='flex flex-row items-center justify-between'>
-                <h3 className='text-[#347928] font-bold text-[28px] mt-2'>PKR: {showBalance ? user.balance : '****'}</h3>
-                <button onClick={toggleBalanceVisibility} className='ml-2'>
-                    {showBalance ? (
-                        <FontAwesomeIcon icon={faEyeSlash} className='text-[#347928] text-[16px]' />
-                    ) : (
-                        <FontAwesomeIcon icon={faEye} className='text-[#347928] text-[16px]' />
-                    )}
+            <div className="flex flex-row items-center justify-between">
+                <h3 className="text-[#347928] font-bold text-[28px] mt-2">
+                    PKR: {showBalance ? availableBalance : '****'}
+                </h3>
+                <button onClick={toggleBalanceVisibility} className="ml-2">
+                    <FontAwesomeIcon
+                        icon={showBalance ? faEyeSlash : faEye}
+                        className="text-[#347928] text-[16px]"
+                    />
                 </button>
             </div>
-            <h3 className='text-[#347928] font-bold text-[38px] mt-2'>PKR {pkr}</h3>
+
+            <h3 className="text-[#347928] font-bold text-[38px] mt-2">PKR {withdrawAmount}</h3>
+
             <label className="text-[16px] text-gray-500 font-bold mt-4">Enter Amount</label>
             <input
                 className="p-2 w-[120px] border rounded-md bg-white mt-1 text-[24px] font-bold"
                 type="text"
-                id="pkr"
-                name="pkr"
-                placeholder=""
-                value={pkr}
-                onChange={handlePkrChange}
+                name="withdrawAmount"
+                value={withdrawAmount}
+                onChange={handleAmountChange}
                 required
             />
+
             <span className="text-[18px] text-black w-[90%] font-medium mt-4">Withdraw Money To</span>
-            <div className="flex flex-row items-center justify-between p-2 pl-4 pr-4 rounded-lg shadow-sm w-[90%] mt-4">
-                <FontAwesomeIcon icon={faBank} className='text-[#347928] text-[24px]' />
-                <div className="flex flex-col items-start w-[70%]">
-                    <span className="text-[18px] text-black font-medium">JazzCash</span>
-                    <span className="text-[18px] text-black font-medium">*********9768</span>
+
+            {haveBank ? (
+                <div className="flex flex-row items-center justify-between p-2 pl-4 pr-4 rounded-lg shadow-sm w-[90%] mt-4">
+                    <FontAwesomeIcon icon={faBank} className="text-[#347928] text-[24px]" />
+                    <div className="flex flex-col items-start w-[70%]">
+                        <span className="text-[12px] text-black font-medium">{formData.bankName}</span>
+                        <span className="text-[12px] text-black font-medium">{formData.accountNumber && maskString(formData.accountNumber)}</span>
+                    </div>
+                    <button onClick={() => setIsModalOpen(true)}>
+                        <FontAwesomeIcon icon={faEdit} className="text-[#347928] text-[16px]" />
+                    </button>
                 </div>
-                <button onClick={() => setIsModalOpen(true)}>
-                    <FontAwesomeIcon icon={faEdit} className='text-[#347928] text-[16px]' />
+            ) : (
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex flex-col items-center justify-center p-2 pl-4 pr-4 rounded-full shadow-sm w-[50px] h-[50px] mt-4 border-[1.5px]"
+                >
+                    <span className="text-[14px] text-[#347928] font-bold">Add</span>
                 </button>
-            </div>
+            )}
+
             <p className="text-[14px] text-red-500 w-[90%] mt-4 font-medium">
-                Note: According to the policy service charges will be applicable on every withdrawal.
+                Note: According to the policy, service charges will be applicable on every withdrawal.
             </p>
-            <button type="submit" onClick={() => navigate('/withdraw-sucess')} className="submit-button w-[90%] mt-4">Withdraw</button>
+
+            <button
+                onClick={handleWithdraw}
+                className="submit-button w-[90%] mt-4"
+            >
+                Withdraw
+            </button>
+
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <h2 className="text-xl font-semibold mb-4">Bank Details:</h2>
                 <form className="deposit-form" onSubmit={handleSubmit}>
@@ -101,6 +257,7 @@ export default function Withdraw() {
                             <option value="Bank ABC">Bank ABC</option>
                         </select>
                     </div>
+
                     <div className="form-group">
                         <label htmlFor="accountHolderName">Account Holder Name</label>
                         <input
@@ -113,6 +270,7 @@ export default function Withdraw() {
                             required
                         />
                     </div>
+
                     <div className="form-group">
                         <label htmlFor="accountNumber">Account Number</label>
                         <input
@@ -125,9 +283,12 @@ export default function Withdraw() {
                             required
                         />
                     </div>
-                    <button type="submit" className="submit-button">Update</button>
+
+                    <button type="submit" className="submit-button">
+                        {haveBank ? "Update" : "Submit"}
+                    </button>
                 </form>
             </Modal>
         </div>
-    )
+    );
 }

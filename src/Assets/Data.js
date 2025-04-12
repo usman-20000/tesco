@@ -1,10 +1,10 @@
 
-export const BaseUrl = "https://tesco-api.vercel.app";
-// export const BaseUrl = "http://localhost:4000";
+// export const BaseUrl = "https://tesco-api.vercel.app";
+export const BaseUrl = "http://localhost:4000";
 
 const id = localStorage.getItem('id');
 
-export const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgh6eftpe/image/upload";
+export const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/da9jxjnlv/image/upload";
 
 export const fetchData = async () => {
     try {
@@ -75,6 +75,15 @@ export const timeDifference = (start) => {
     const diffSeconds = Math.floor((diffMs / 1000) % 60);
 
     return `${diffHours}h ${diffMinutes}m ${diffSeconds}s`;
+};
+
+export const maskString = (str) => {
+    // Check if the string is longer than 4 characters
+    if (str.length > 4) {
+        // Replace all characters except the last 4 with asterisks
+        return '*'.repeat(str.length - 4) + str.slice(-4);
+    }
+    return str; // If the string is 4 characters or fewer, just return it as is
 };
 
 

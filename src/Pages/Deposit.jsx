@@ -46,8 +46,8 @@ function Deposit() {
 
         let form = new FormData();
         form.append('file', formData.paymentProof);
-        form.append('upload_preset', 'FirstAccFlipper_preset');
-        form.append('cloud_name', 'dgh6eftpe');
+        form.append('upload_preset', 'tesco_app');
+        form.append('cloud_name', 'da9jxjnlv');
 
         const cloudinaryResponse = await fetch(CLOUDINARY_URL, {
             method: 'POST',
@@ -187,13 +187,12 @@ function Deposit() {
                     <div className="form-group">
                         <label htmlFor="accountNumber">Amount</label>
                         <input
-                            type="number"
-                            id="amount"
+                            type="text"
+                            pattern="\d*"
+                            inputMode="numeric"
                             name="amount"
-                            placeholder="Enter account number"
                             value={formData.amount}
                             onChange={handleChange}
-                            required
                         />
                     </div>
                     {formData.paymentProof && <img src={URL.createObjectURL(formData.paymentProof)} alt="Preview" className='w-full h-[150px] rounded-md' />}

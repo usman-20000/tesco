@@ -2,7 +2,7 @@ import React from 'react';
 import './BottomNav.css';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBarsProgress, faBookAtlas, faDiagramSuccessor, faHome, faLayerGroup, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
+import { faBarsProgress, faBook, faBookAtlas, faDiagramSuccessor, faHome, faLayerGroup, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 
 function BottomNav() {
     return (
@@ -19,9 +19,9 @@ function BottomNav() {
                 <FontAwesomeIcon icon={faPeopleGroup} />
                 <span>Team</span>
             </NavLink>
-            <NavLink to="/more" className="nav-item" activeClassName="active">
-                <FontAwesomeIcon icon={faLayerGroup} />
-                <span>More</span>
+            <NavLink to="/team-detail" className="nav-item" activeClassName="active">
+                <FontAwesomeIcon icon={faBook} />
+                <span>Details</span>
             </NavLink>
         </nav>
     );

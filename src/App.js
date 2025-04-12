@@ -22,12 +22,14 @@ import Progress from './Pages/Progress';
 import Notification from './Pages/Notification';
 import ForgotPassword from './Pages/ForgotPassword';
 import Dashboard from './Pages/Dashboard';
+import DepositHistory from './Pages/DepositHistory';
+import WithdrawHistory from './Pages/WithdrawHistory';
 
 function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress"];
+  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress", "/dashboard", '/deposit-history', '/withdraw-history'];
   const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail", "/progress"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
@@ -55,6 +57,8 @@ function App() {
             <Route path="/progress" element={<Progress />} />
             <Route path="/notification" element={<Notification />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/deposit-history" element={<DepositHistory />} />
+            <Route path="/withdraw-history" element={<WithdrawHistory />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
