@@ -1,6 +1,7 @@
 
 export const BaseUrl = "https://tesco-api.vercel.app";
 // export const BaseUrl = "http://localhost:4000";
+
 const id = localStorage.getItem('id');
 
 export const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgh6eftpe/image/upload";
