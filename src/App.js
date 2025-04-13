@@ -29,7 +29,7 @@ function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress", "/dashboard", '/deposit-history', '/withdraw-history'];
+  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress", "/dashboard"];
   const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail", "/progress"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
