@@ -21,8 +21,8 @@ function Home() {
         setLoading(true);
         const data = await fetchData();
         console.log('data:', data?.name);
-        setUserData(data);
-        fetchPlans();
+       await fetchPlans();
+        await setUserData(data);
         setLoading(false);
     }
 
@@ -133,7 +133,7 @@ function Home() {
                     </div>
                     <div className="offers-grid">
                         {investmentOffers.map((offer) => (
-                            !freePlan && offer.id.toString() === '1' ? <></> : <div onClick={() => { !offer.lock && navigate(`/invest/${offer.id}`) }} key={offer.id} className={`offer-card ${offer.lock ? '' : 'shadow-md'}`}>
+                            freePlan && offer.id.toString() === '1' ? <></> : <div onClick={() => { !offer.lock && navigate(`/invest/${offer.id}`) }} key={offer.id} className={`offer-card ${offer.lock ? '' : 'shadow-md'}`}>
                                 <img src={offer.image} alt={offer?.name} className="offer-image" />
                                 <div className='w-[50%] flex flex-col items-left'>
                                     <h2>investment:{offer.amount}</h2>
