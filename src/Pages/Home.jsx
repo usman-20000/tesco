@@ -63,7 +63,6 @@ function Home() {
     return (
         <>
             {loading ? <LoadingSpinner /> : <div className="home-container md:mb-4 mb-[25%] md:mt-[5%] mt-[15%]">
-                {/* User Info Section */}
                 <div className='flex flex-row items-center justify-between mb-4 w-[70%] mt-4'>
                     <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
                         <p className='text-black text-[16px]'>Deposit Balance</p>
@@ -134,7 +133,7 @@ function Home() {
                     </div>
                     <div className="offers-grid">
                         {investmentOffers.map((offer) => (
-                            freePlan && offer.id.toString() === '1' ? null : <div onClick={() => { !offer.lock && navigate(`/invest/${offer.id}`) }} key={offer.id} className={`offer-card ${offer.lock ? '' : 'shadow-md'}`}>
+                            !freePlan && offer.id.toString() === '1' ? <></> : <div onClick={() => { !offer.lock && navigate(`/invest/${offer.id}`) }} key={offer.id} className={`offer-card ${offer.lock ? '' : 'shadow-md'}`}>
                                 <img src={offer.image} alt={offer?.name} className="offer-image" />
                                 <div className='w-[50%] flex flex-col items-left'>
                                     <h2>investment:{offer.amount}</h2>
