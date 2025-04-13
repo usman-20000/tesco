@@ -79,8 +79,8 @@ export default function Invest() {
             <p className="p-2 h-[40px] w-[100px] border-[1.5px] border-[#5D8736] rounded-md bg-white mt-1 text-[12px] font-bold text-center">{select?.amount}</p>
             <span className='text-black font-bold text-[12px] mt-4 w-[90%]'>Daily Profit: <span className="font-normal">= {select?.profit}</span></span>
             <span className='text-black font-bold text-[12px] mt-2 w-[90%]'>Total Profit: <span className="font-normal">= {select?.profit * select?.days}</span></span>
-            <span className='text-black font-bold text-[12px] mt-2 w-[90%]'>Total Return: <span className="font-normal">= {(select?.profit * select?.days) + select?.amount}</span></span>
-            {!loading ? <button onClick={handleSubmit} className="bg-gradient-to-r from-[#5D8736] to-[#809D3C] text-white px-4 py-2 border-none rounded text-[16px] cursor-pointer transition duration-300 ease-in-out w-[90%] mt-[50%]">
+            <span className='text-black font-bold text-[12px] mt-2 w-[90%]'>Total Return: <span className="font-normal">= {select?.profit * select?.days}</span></span>
+            {!loading ? <button onClick={handleSubmit} className="bg-gradient-to-r from-[#5D8736] to-[#809D3C] text-white px-4 py-2 border-none rounded text-[16px] cursor-pointer transition duration-300 ease-in-out w-[90%] mt-[10%]">
                 Invest
             </button> : <LoadingSpinner />}
         </div>

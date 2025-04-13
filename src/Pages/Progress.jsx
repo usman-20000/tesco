@@ -126,9 +126,9 @@ export default function Progress() {
                                         {item?.status}
                                     </span>
                                 </div>
-                                {<div className="flex flex-row items-center justify-between w-[90%] mt-2">
+                                {/* {<div className="flex flex-row items-center justify-between w-[90%] mt-2">
                                     <span className="text-[12px] font-medium text-[#347928] w-full">{item.planId === '1' ? peopleInvested.plan1 : item.planId === '2' ? peopleInvested.plan2 : item.planId === '3' ? peopleInvested.plan3 : ''} people invested</span>
-                                </div>}
+                                </div>} */}
                                 {item?.status === 'pending' && (
                                     <span className="px-2 py-1 border-[1.5px] border-[#347928] rounded-md text-[12px] text-[#347928] self-start ml-[5%] mt-2">
                                         Pending
