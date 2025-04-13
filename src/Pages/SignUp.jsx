@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/SignUp.css';
 import { BaseUrl } from '../Assets/Data';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -9,6 +9,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 function SignUp() {
 
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
@@ -72,6 +73,15 @@ function SignUp() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (id) {
+            setFormData((prevState) => ({
+                ...prevState,
+                referralCode: id,
+            }));
+        }
+    }, [id]);
 
 
     return (

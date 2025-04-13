@@ -40,6 +40,7 @@ function App() {
       <main className='pt-[10%]'>
         <Routes>
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup/:id" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route element={<PrivateRoute />}>

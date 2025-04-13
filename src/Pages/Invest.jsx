@@ -15,7 +15,7 @@ export default function Invest() {
     const [loading, setLoading] = useState(false);
 
     const fetchData = async () => {
-        const data = await investmentOffers.find((item) => item.id === parseFloat(id));
+        const data = investmentOffers.find((item) => item.id === parseFloat(id));
         console.log(data,);
         setSelect(data);
     }

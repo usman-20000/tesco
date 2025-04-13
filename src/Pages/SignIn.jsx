@@ -47,9 +47,9 @@ function SignIn() {
             if (!response.ok) {
                 throw new Error(data.message || 'Registration failed!');
             }
-            localStorage.setItem('id', data.data.id);
+            await localStorage.setItem('id', data.data.id);
             // console.log('data:', data, data.data.id);
-            navigate('/');
+            await navigate('/');
             console.log('Server Response:', data);
         } catch (error) {
             console.error('Error:', error);

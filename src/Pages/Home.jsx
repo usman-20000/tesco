@@ -68,7 +68,7 @@ function Home() {
                     <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
                         <p className='text-black text-[16px]'>Deposit Balance</p>
                         <div className='flex flex-row items-center justify-between'>
-                            <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showDeposit ? userData.deposit : '****'}</h3>
+                            <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showDeposit ? userData?.deposit : '****'}</h3>
                             <button onClick={toggleDepositVisibility} className='ml-2'>
                                 {showDeposit ? (
                                     <FontAwesomeIcon icon={faEyeSlash} className='text-[#347928] text-[14px]' />
@@ -134,7 +134,7 @@ function Home() {
                     </div>
                     <div className="offers-grid">
                         {investmentOffers.map((offer) => (
-                            freePlan && offer.id.toString() === '1' ? null : <div onClick={() => navigate(`/invest/${offer.id}`)} key={offer.id} className="offer-card">
+                            freePlan && offer.id.toString() === '1' ? null : <div onClick={() => { !offer.lock && navigate(`/invest/${offer.id}`) }} key={offer.id} className={`offer-card ${offer.lock ? '' : 'shadow-md'}`}>
                                 <img src={offer.image} alt={offer?.name} className="offer-image" />
                                 <div className='w-[50%] flex flex-col items-left'>
                                     <h2>investment:{offer.amount}</h2>
@@ -157,7 +157,7 @@ function Home() {
                                 <div className='w-[30%] flex flex-col items-center justify-end h-full'>
                                     <span className='text-[#347928] font-bold text-[11px]'>{offer.name}</span>
                                     <span className='text-[#347928] font-bold text-[10px]'>Daily Profit:{offer.profit}</span>
-                                    <span className='bg-[#77B254] p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full'>Open Now</span>
+                                    <span className='bg-[#77B254] p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full'>{offer.lock ? 'Locked' : 'Open Now'}</span>
                                 </div>
                             </div>
                         ))}

@@ -94,11 +94,6 @@ function Deposit() {
             if (response.ok) {
                 navigate('/home');
                 alert('Request Sent');
-                // navigation.navigate('Home');
-                // await sendNotification('BTW-admin', 'Payment Request', `payment request of ${price} $`, 'Screenshot');
-                // await sendEmail('wingedxnetwork@gmail.com', 'USDT Request', `you have USDT request for ${price} $ of Id ${userId} `);
-                // setImage1(null);
-                // setPrice('');
             }
         } catch (error) {
             console.error('Error submitting category:', error);
@@ -119,8 +114,8 @@ function Deposit() {
                         <span>Bank Name:</span>
                     </div>
                     <div className="border rounded-md p-2 flex flex-row items-center justify-between">
-                        <span className='text-[14px] text-black font-bold'>United Bank Ltd.</span>
-                        <button onClick={() => handleCopy('Bank XYZ')}>
+                        <span className='text-[14px] text-black font-bold'>Easypaisa</span>
+                        <button onClick={() => handleCopy('Easypaisa')}>
                             <FontAwesomeIcon icon={faCopy} className='text-gray-500 text-[20px]' />
                         </button>
                     </div>
@@ -128,8 +123,8 @@ function Deposit() {
                         <span>Account Holder Name:</span>
                     </div>
                     <div className="border rounded-md p-2 flex flex-row items-center justify-between">
-                        <span className='text-[14px] text-black font-bold'>Lorem ipsum</span>
-                        <button onClick={() => handleCopy('Bank XYZ')}>
+                        <span className='text-[14px] text-black font-bold'>Mohammed Kashif</span>
+                        <button onClick={() => handleCopy('Mohammed Kashif')}>
                             <FontAwesomeIcon icon={faCopy} className='text-gray-500 text-[20px]' />
                         </button>
                     </div>
@@ -137,8 +132,8 @@ function Deposit() {
                         <span>Account Number:</span>
                     </div>
                     <div className="border rounded-md p-2 flex flex-row items-center justify-between">
-                        <span className='text-[14px] text-black font-bold'>987968796765</span>
-                        <button onClick={() => handleCopy('Bank XYZ')}>
+                        <span className='text-[14px] text-black font-bold'>03248008331</span>
+                        <button onClick={() => handleCopy('03248008331')}>
                             <FontAwesomeIcon icon={faCopy} className='text-gray-500 text-[20px]' />
                         </button>
                     </div>

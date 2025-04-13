@@ -30,6 +30,8 @@ export default function Withdraw() {
         accountNumber: ''
     });
 
+    const banks = ['Alfalah', 'Easypaisa', 'Jazzcash', 'HBL', 'Meezan Bank', 'MCB', 'NIB Bank', 'Standard Chartered Bank', 'UBL'];
+
     const userId = localStorage.getItem('id');
 
     // Toggle balance visibility
@@ -47,6 +49,24 @@ export default function Withdraw() {
     const handleAmountChange = (e) => {
         setWithdrawAmount(e.target.value);
     };
+
+    const fetchLastWithdrawal = async () => {
+        const id = localStorage.getItem('id');
+        const endpoint = `${BaseUrl}/last-withdraw/${id}`;
+        try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            if (response.ok) {
+                return data;
+            } else {
+                console.error('Error fetching last withdrawal:', data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching last withdrawal:', error);
+        }finally{
+            setLoading(false);
+        }
+    }
 
     // Fetch bank & balance data
     const fetchData = async () => {
@@ -123,26 +143,46 @@ export default function Withdraw() {
         fetchData();
     }, []);
 
+
+
     const handleWithdraw = async () => {
         const id = localStorage.getItem('id');
-        const endpoint = `${BaseUrl}/withdraw`; // Replace with your actual endpoint
+        const endpoint = `${BaseUrl}/withdraw`;
         setLoading(true);
+        const lastWithdrawal = await fetchLastWithdrawal();
+        const lastWithdrawDate = new Date(lastWithdrawal?.timestamp);
+        const currentDate = new Date();
+        const timeDifference = currentDate - lastWithdrawDate;
+        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+        if (lastWithdrawal && hoursDifference < 24) {
+            alert(`You can only withdraw once every 24 hours. Please try again later.`);
+            return;
+        }
 
-        if(withdrawAmount > availableBalance){
+        if (withdrawAmount > availableBalance) {
             alert('Withdraw amount exceeds available balance');
             setLoading(false);
             return;
         }
-        if(withdrawAmount <= 0){
+        if (withdrawAmount <= 0) {
             alert('Withdraw amount must be greater than zero');
             setLoading(false);
             return;
         }
-        if(withdrawAmount === ''){
+        if (withdrawAmount === '') {
             alert('Withdraw amount cannot be empty');
             setLoading(false);
             return;
         }
+
+        const currentHour = new Date().getHours();
+
+        if (currentHour < 10 || currentHour >= 17) {
+            alert('Withdraw opens at 10 AM and closes at 5 PM');
+            setLoading(false);
+            return;
+        }
+
 
         const data = {
             sender: id,
@@ -172,7 +212,7 @@ export default function Withdraw() {
         } catch (err) {
             console.error('Error:', err);
             alert('Failed to create withdrawal');
-        }finally{
+        } finally {
             setLoading(false);
         }
     };
@@ -232,7 +272,17 @@ export default function Withdraw() {
             <p className="text-[14px] text-red-500 w-[90%] mt-4 font-medium">
                 Note: According to the policy, service charges will be applicable on every withdrawal.
             </p>
-
+            <h2 className="text-[14px] font-bold mt-2 text-black">Instructions</h2>
+            <ol className="text-[12px] text-black w-[90%] mt-2 font-medium list-decimal list-inside">
+                <li>Withdrawal time: 10 AM to 5:00 PM.</li>
+                <li>The minimum withdrawal amount is 50 PKR.</li>
+                <li>
+                    Withdrawal will be sent to your attached accounts. We will not be responsible
+                    if your attached account is invalid.
+                </li>
+                <li>1 withdrawal is allowed daily.</li>
+                <li>The service fee for each withdrawal is 2%.</li>
+            </ol>
             <button
                 onClick={handleWithdraw}
                 className="submit-button w-[90%] mt-4"
@@ -253,8 +303,7 @@ export default function Withdraw() {
                             required
                         >
                             <option value="">Select Bank</option>
-                            <option value="Bank XYZ">Bank XYZ</option>
-                            <option value="Bank ABC">Bank ABC</option>
+                            {banks.map((item) => (<option value={item}>{item}</option>))}
                         </select>
                     </div>
 

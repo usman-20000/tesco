@@ -90,7 +90,7 @@ export const maskString = (str) => {
 export const investmentOffers = [
     {
         id: 1,
-        image: 'https://st.depositphotos.com/1000128/1949/i/450/depositphotos_19492613-stock-photo-gold-ingots.jpg',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR3h7UJSMMPskCSl6IL7PJhUkZvGlP88Jhww&s',
         name: 'Free Plan',
         days: 5,
         profit: 10,
@@ -106,7 +106,7 @@ export const investmentOffers = [
     },
     {
         id: 3,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9uxOTIkvNmtxo5CdEsCtZ9liR1qLgxewdcg&s',
         name: 'Bronze Plan',
         days: 30,
         profit: 100,
@@ -114,7 +114,7 @@ export const investmentOffers = [
     },
     {
         id: 4,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://media.istockphoto.com/id/535484810/photo/gold-bars-on-white-background.jpg?s=612x612&w=0&k=20&c=gmjQGSrVRRemRFl7fZrxAEH_K9j9gTJOQmlIoANc56U=',
         name: 'Gold Investor',
         days: 30,
         profit: 205,
@@ -130,66 +130,74 @@ export const investmentOffers = [
     },
     {
         id: 6,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://cdn.pixabay.com/photo/2013/07/13/13/53/diamond-161739_640.png',
         name: 'Diamond Deluxe',
         days: 30,
         profit: 700,
         amount: 10000,
+        lock: true
     },
     {
         id: 7,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://st.depositphotos.com/1013408/1461/i/450/depositphotos_14616183-stock-photo-green-round-cut-emerald.jpg',
         name: 'Emerald Elite',
         days: 30,
         profit: 1050,
         amount: 15000,
+        lock: true
     },
     {
         id: 8,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://2.imimg.com/data2/SJ/ON/MY-3453542/ruby-250x250.jpg',
         name: 'Rubby Reward',
         days: 30,
         profit: 1800,
         amount: 25000,
+        lock: true
     },
     {
         id: 9,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://static7.depositphotos.com/1006360/766/i/450/depositphotos_7662092-stock-photo-sapphire.jpg',
         name: 'Sapphire Strategic',
         days: 30,
         profit: 2600,
         amount: 35000,
+        lock: true
     },
     {
         id: 10,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://blog.goldsupplier.com/wp-content/uploads/2024/06/a-91.png',
         name: 'Titanium Tactical',
         days: 30,
         profit: 3900,
         amount: 50000,
+        lock: true
     },
     {
         id: 11,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://plus.unsplash.com/premium_photo-1682309580199-12b830e35008?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         name: 'Growth Pro',
         days: 30,
         profit: 5300,
         amount: 65000,
+        lock: true
     },
     {
         id: 12,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-biyr4mO-BnQ3or0X1ROmQf92qu1h1_k4sg&s',
         name: 'Easy Invest',
         days: 30,
         profit: 7000,
         amount: 80000,
+        lock: true
     },
     {
         id: 13,
-        image: 'https://marinaleksov.com/wp-content/uploads/2021/02/platinum.jpg',
+        image: 'https://plus.unsplash.com/premium_photo-1682309799578-6e685bacd4e1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW52ZXN0bWVudHxlbnwwfHwwfHx8MA%3D%3D',
         name: 'Maximize Returns',
         days: 30,
         profit: 10000,
         amount: 100000,
+        lock: true
     },
 ];
