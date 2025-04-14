@@ -1,12 +1,19 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Contact() {
+
+    const navigate = useNavigate();
+    const goBack = ()=> {
+        navigate(-1);
+    }
+
     return (
         <div className="flex flex-col items-center mt-2 w-full pb-[20%]">
             <div className="flex flex-row items-center w-[90%]">
-                <div className="flex flex-col items-center h-[15px] w-[15px]">
+                <div onClick={goBack} className="flex flex-col items-center h-[15px] w-[15px]">
                     <FontAwesomeIcon icon={faClose} className="h-[15px] w-[15px]" />
                 </div>
                 <span className="text-[#347928] text-[14px] font-medium ml-2">Tesco Contact Customer Support</span>

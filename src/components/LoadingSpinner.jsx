@@ -4,8 +4,7 @@ import '../../src/styles/spinner.css'; // This is the custom CSS file for the sp
 const LoadingSpinner = () => {
   return (
     <div className="spinner-container">
-      {/* <div className="spinner"></div> */}
-      <img src={require('../Assets/image/progress.gif')} alt="Loading..." className="h-[50px] w-[50px] " />
+      <div className="spinner"></div>
     </div>
   );
 };

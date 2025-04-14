@@ -22,7 +22,7 @@ function Home() {
         const data = await fetchData();
         console.log('data:', data?.name);
         await fetchPlans();
-        setUserData(data);
+        await setUserData(data);
         setLoading(false);
     }, []);
 
@@ -162,7 +162,7 @@ function Home() {
                                 <div className='w-[30%] flex flex-col items-center justify-end h-full'>
                                     <span className='text-[#347928] font-bold text-[11px]'>{offer.name}</span>
                                     <span className='text-[#347928] font-bold text-[10px]'>Daily Profit:{offer.profit}</span>
-                                    <span className={`bg-${offer.lock ? 'red-500' : '[#77B254]'} p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full`}>{offer.lock ? 'Locked' : 'Open Now'}</span>
+                                    <span className={`${offer.lock ? 'bg-red-500' : 'bg-[#77B254]'} p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full`}>{offer.lock ? 'Locked' : 'Open Now'}</span>
                                 </div>
                             </div>
                         ))}
