@@ -42,6 +42,13 @@ function SignUp() {
         setLoading(true);
         if (formData.password !== formData.retypePassword) {
             alert('Passwords do not match!');
+            setLoading(false);
+            return;
+        }
+
+        if (!formData.referralCode) {
+            alert('Referral code is required!');
+            setLoading(false);
             return;
         }
 
@@ -138,7 +145,7 @@ function SignUp() {
                                 required
                                 className='p-[8px] w-[90%] border-none rounded-md bg-white outline-none bg-transparent'
                             />
-                            <button onClick={togglePasswordVisibility} className='w-[10%] flex flex-col items-center'>
+                            <button type="button" onClick={togglePasswordVisibility} className='w-[10%] flex flex-col items-center'>
                                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className='text-black text-[14px]' />
                             </button>
                         </div>
@@ -156,7 +163,7 @@ function SignUp() {
                                 required
                                 className='p-[8px] w-[90%] border-none rounded-md bg-white outline-none bg-transparent'
                             />
-                            <button onClick={togglePasswordVisibility2} className='w-[10%] flex flex-col items-center'>
+                            <button type="button" onClick={togglePasswordVisibility2} className='w-[10%] flex flex-col items-center'>
                                 <FontAwesomeIcon icon={showPassword2 ? faEyeSlash : faEye} className='text-black text-[14px]' />
                             </button>
                         </div>

@@ -24,6 +24,7 @@ import ForgotPassword from './Pages/ForgotPassword';
 import Dashboard from './Pages/Dashboard';
 import DepositHistory from './Pages/DepositHistory';
 import WithdrawHistory from './Pages/WithdrawHistory';
+import Profile from './Pages/Profile';
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/deposit-history" element={<DepositHistory />} />
             <Route path="/withdraw-history" element={<WithdrawHistory />} />
+            <Route path="/Profile" element={<Profile />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

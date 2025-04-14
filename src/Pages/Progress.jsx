@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BaseUrl, formatDate, timeAgo, timeDifference } from "../Assets/Data";
+import { BaseUrl, daysDifference, formatDate, timeAgo, timeDifference } from "../Assets/Data";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Progress() {
@@ -11,8 +11,8 @@ export default function Progress() {
     const id = localStorage.getItem('id');
 
     const levels = [
-        { id: 1, name: "Complete" },
         { id: 2, name: "Running" },
+        { id: 1, name: "Complete" },
     ];
 
     const fetchPlans = async () => {
@@ -105,6 +105,14 @@ export default function Progress() {
                                         <span className="text-[12px] font-bold text-black w-[50%]">Remaining Time to Claim:</span>
                                         <span className="text-[12px] font-bold text-right text-[#347928] w-[50%]">
                                             {item?.lastClaim && timeDifference(item.lastClaim)}
+                                        </span>
+                                    </div>
+                                )}
+                                {selectedLevel === 2 && (
+                                    <div className="flex flex-row items-center justify-between w-[90%] mt-2">
+                                        <span className="text-[12px] font-bold text-black w-[50%]">Days Left:</span>
+                                        <span className="text-[12px] font-bold text-right text-[#347928] w-[50%]">
+                                            {item?.endDate && daysDifference(item.endDate)} Days
                                         </span>
                                     </div>
                                 )}

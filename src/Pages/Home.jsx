@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faClose, faEye, faEyeSlash, faMoneyBill, faMoneyBill1, faMoneyBillTransfer, faMoneyCheckDollar, faSliders } from '@fortawesome/free-solid-svg-icons';
@@ -17,17 +17,17 @@ function Home() {
     const [peopleInvested, setPeopleInvested] = React.useState([]);
     const [freePlan, setFreePlan] = React.useState(false);
 
-    const fetchUserData = async () => {
+    const fetchUserData = useCallback(async () => {
         setLoading(true);
         const data = await fetchData();
         console.log('data:', data?.name);
-       await fetchPlans();
+        await fetchPlans();
         await setUserData(data);
         setLoading(false);
-    }
+    }, []);
 
 
-    const fetchPlans = async () => {
+    const fetchPlans = useCallback(async () => {
         try {
             const id = localStorage.getItem('id');
             setLoading(true);
@@ -46,7 +46,7 @@ function Home() {
         } finally {
             setLoading(false);
         }
-    }
+    }, []);
 
     useEffect(() => {
         fetchUserData();
@@ -92,18 +92,18 @@ function Home() {
                     </div>
                 </div>
                 <div className="action-buttons flex flex-row items-center justify-center gap-4">
-                    <a href='/deposit' className='no-underline'>
+                    {/* <a href='/deposit' className='no-underline'>
                         <button className="flex flex-col items-center justify-center text-[12px] text-black font-medium ">
                             <div className="flex flex-col items-center justify-center text-[12px] text-[#347928] border-1 border-[#347928] rounded-full h-10 w-10">
                                 <FontAwesomeIcon icon={faAdd} className='text-[#347928] text-[18px]' />
                             </div>
                             Deposit
                         </button>
-                    </a>
+                    </a> */}
                     <a href='/withdraw' className='no-underline'>
-                        <button className="flex flex-col items-center justify-center text-[12px] text-black font-medium ">
-                            <div className="flex flex-col items-center justify-center text-[12px] text-[#347928] border-1 border-[#347928] rounded-full h-10 w-10">
-                                <FontAwesomeIcon icon={faMoneyBillTransfer} className='text-[#347928] text-[18px]' />
+                        <button className="flex flex-col items-center justify-center text-[12px] text-[#880808] font-medium ">
+                            <div className="flex flex-col items-center justify-center text-[12px] text-[#880808] border-1 border-[#880808] rounded-full h-10 w-10">
+                                <FontAwesomeIcon icon={faMoneyBillTransfer} className='text-[#880808] text-[18px]' />
                             </div>
                             Withdraw
                         </button>

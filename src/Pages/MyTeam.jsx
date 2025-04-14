@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BaseUrl } from "../Assets/Data";
+import { BaseUrl, formatDate } from "../Assets/Data";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function MyTeam() {
@@ -42,34 +42,37 @@ export default function MyTeam() {
 
     return (
         <div className="flex flex-col items-center mt-[5%] w-full h-screen">
-            <div className="flex space-x-4 mb-2 bg-white pt-2 mt-[2%]">
+            <div className="flex space-x-8 mb-2 bg-white pt-2 mt-[2%]">
                 {levels.map((level) => (
                     <button
                         key={level.id}
                         onClick={() => setSelectedLevel(level.id)}
-                        className={`px-4 py-2 rounded-full font-medium text-xs transition-all duration-300 ${selectedLevel === level.id
-                            ? "bg-[#347928] text-white shadow-lg"
-                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        className={`h-[45px] w-[45px] rounded-full text-[24px] font-bold border-[2px]  transition-all duration-300 bg-white ${selectedLevel === level.id
+                            ? "text-[#347928] shadow-lg border-[#347928]"
+                            : "bg-gray-200 border-gray-400 text-gray-400 hover:bg-gray-300"
                             }`}
                     >
-                        {level.name}
+                        {level.id}
                     </button>
                 ))}
             </div>
 
-            {loading ? <LoadingSpinner /> : <div className="overflow-y-auto w-full flex flex-col items-center px-4 mb-[20%]" style={{ maxHeight: '80vh' }}>
+            {loading ? <LoadingSpinner /> : <div className="overflow-y-auto w-full flex flex-col items-center px-4 mb-[20%] mt-[2%]" style={{ maxHeight: '80vh' }}>
                 {selectedData?.map((member, index) => (
                     <div key={index} className="w-[90%] max-w-md pl-4 pr-4 p-2 mb-2 rounded-lg shadow-md bg-[#347928] text-white">
                         <div className="flex justify-between items-top">
-                            <h3 className="text-[14px] font-medium w-[50%]">Name: {member?.name}</h3>
-                            <span className="text-[14px] font-medium w-[50%] text-right">Invested: Rs. {member?.totalInvest}</span>
+                            <h3 className="text-[12px] font-medium w-[50%]">{member?.name}</h3>
+                            <span className="text-[12px] font-medium w-[50%] text-right">Invested:{member?.totalInvest}</span>
                         </div>
-                        <div className="text-left text-xs font-normal">
-                            {member?.email}
+                        <div className="flex justify-between items-top">
+                            <span className="text-[12px] font-medium w-[50%]">{member?.email}</span>
+                            <span className="text-[12px] font-medium w-[50%] text-right">Withdrawal:{member?.totalWithdraw}</span>
                         </div>
-                        {/* <div className="text-right text-[10px] font-normal">
-                            {member?.date}
-                        </div> */}
+                        
+                        <div className="flex justify-between items-top mt-2">
+                            <span className="text-[12px] font-medium w-[50%]">Date:</span>
+                            <span className="text-[12px] font-medium w-[50%] text-right">{member?.updatedAt? formatDate(member?.updatedAt):'dd/mm/yyyy'}</span>
+                        </div>
                     </div>
                 ))}
             </div>}

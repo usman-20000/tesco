@@ -85,6 +85,15 @@ export const maskString = (str) => {
     }
     return str; // If the string is 4 characters or fewer, just return it as is
 };
+export const daysDifference = ( end) => {
+    const date1 = new Date();
+    const date2 = new Date(end);
+
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    return diffDays;
+}
 
 
 export const investmentOffers = [

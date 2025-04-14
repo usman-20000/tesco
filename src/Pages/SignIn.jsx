@@ -88,7 +88,7 @@ function SignIn() {
                                 required
                                 className='p-[8px] w-[90%] border-none rounded-md bg-white outline-none bg-transparent'
                             />
-                            <button onClick={togglePasswordVisibility} className='w-[10%] flex flex-col items-center'>
+                            <button type='button' onClick={togglePasswordVisibility} className='w-[10%] flex flex-col items-center'>
                                 <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className='text-black text-[14px]' />
                             </button>
                         </div>

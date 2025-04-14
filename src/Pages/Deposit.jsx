@@ -183,6 +183,7 @@ function Deposit() {
                         <label htmlFor="accountNumber">Amount</label>
                         <input
                             type="text"
+                            placeholder='Enter amount'
                             pattern="\d*"
                             inputMode="numeric"
                             name="amount"

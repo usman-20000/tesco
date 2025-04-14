@@ -63,7 +63,7 @@ export default function Withdraw() {
             }
         } catch (error) {
             console.error('Error fetching last withdrawal:', error);
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
