@@ -16,6 +16,7 @@ function Deposit() {
         paymentProof: null,
     });
     const [uploading, setUploading] = useState(false);
+    const banks = ['Alfalah', 'Easypaisa', 'Jazzcash', 'HBL', 'Meezan Bank', 'MCB', 'NIB Bank', 'Standard Chartered Bank', 'UBL'];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -151,8 +152,7 @@ function Deposit() {
                             onChange={handleChange}
                             required>
                             <option value="">Select Bank</option>
-                            <option value="Bank XYZ">Bank XYZ</option>
-                            <option value="Bank ABC">Bank ABC</option>
+                            {banks.map((item) => (<option value={item}>{item}</option>))}
                         </select>
                     </div>
                     <div className="form-group">

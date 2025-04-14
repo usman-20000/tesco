@@ -246,6 +246,7 @@ export default function Withdraw() {
                 onChange={handleAmountChange}
                 required
             />
+            {withdrawAmount && <span className="text-[#347928] font-bold text-[12px] mt-2">Tax Amount: {withdrawAmount * 2 / 100}</span>}
 
             <span className="text-[18px] text-black w-[90%] font-medium mt-4">Withdraw Money To</span>
 

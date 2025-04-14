@@ -94,8 +94,8 @@ export default function Team() {
                     </tbody>
                 </table>
             </div>
-            <h2 className="font-bold text-[#347928] mt-4 text-[16px] w-[90%]">Team Interest Commissions</h2>
-            <div class="overflow-x-auto w-[90%]">
+            {/* <h2 className="font-bold text-[#347928] mt-4 text-[16px] w-[90%]">Team Interest Commissions</h2> */}
+            {/* <div class="overflow-x-auto w-[90%]">
                 <table class="table-auto border-collapse border border-gray-300 w-full text-center">
                     <thead class="bg-[#347928] text-white text-[12px]">
                         <tr>
@@ -118,7 +118,7 @@ export default function Team() {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> */}
         </div >}
         </>
     );

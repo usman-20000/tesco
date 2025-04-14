@@ -25,6 +25,9 @@ import Dashboard from './Pages/Dashboard';
 import DepositHistory from './Pages/DepositHistory';
 import WithdrawHistory from './Pages/WithdrawHistory';
 import Profile from './Pages/Profile';
+import EditPassword from './Pages/EditPassword';
+import About from './Pages/About';
+import Contact from './Pages/Contact';
 
 function App() {
 
@@ -62,6 +65,9 @@ function App() {
             <Route path="/deposit-history" element={<DepositHistory />} />
             <Route path="/withdraw-history" element={<WithdrawHistory />} />
             <Route path="/Profile" element={<Profile />} />
+            <Route path="/edit-password/:email" element={<EditPassword />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

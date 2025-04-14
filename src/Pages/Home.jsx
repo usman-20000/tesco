@@ -22,7 +22,7 @@ function Home() {
         const data = await fetchData();
         console.log('data:', data?.name);
         await fetchPlans();
-        await setUserData(data);
+        setUserData(data);
         setLoading(false);
     }, []);
 
@@ -63,8 +63,8 @@ function Home() {
     return (
         <>
             {loading ? <LoadingSpinner /> : <div className="home-container md:mb-4 mb-[25%] md:mt-[5%] mt-[15%]">
-                <div className='flex flex-row items-center justify-between mb-4 w-[70%] mt-4'>
-                    <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
+                <div className='flex flex-row items-center justify-center mb-4 w-[70%] mt-4'>
+                    {/* <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
                         <p className='text-black text-[16px]'>Deposit Balance</p>
                         <div className='flex flex-row items-center justify-between'>
                             <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showDeposit ? userData?.deposit : '****'}</h3>
@@ -76,8 +76,8 @@ function Home() {
                                 )}
                             </button>
                         </div>
-                    </div>
-                    <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[48%]">
+                    </div> */}
+                    <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[70%]">
                         <p className='text-black text-[1px]'>&nbsp; Total Balance &nbsp;</p>
                         <div className='flex flex-row items-center justify-between'>
                             <h3 className='text-[#347928] font-bold text-[14px]'>PKR: {showBalance ? userData?.balance : '****'}</h3>
@@ -92,37 +92,43 @@ function Home() {
                     </div>
                 </div>
                 <div className="action-buttons flex flex-row items-center justify-center gap-4">
-                    {/* <a href='/deposit' className='no-underline'>
-                        <button className="flex flex-col items-center justify-center text-[12px] text-black font-medium ">
-                            <div className="flex flex-col items-center justify-center text-[12px] text-[#347928] border-1 border-[#347928] rounded-full h-10 w-10">
-                                <FontAwesomeIcon icon={faAdd} className='text-[#347928] text-[18px]' />
+                    <a href='/deposit' className='no-underline'>
+                        <button className="flex flex-col items-center justify-center text-[12px] text-red-500 font-medium ">
+                            <div className="flex flex-col items-center justify-center text-[12px] text-red-500 border-1 border-red-500 rounded-full h-10 w-10">
+                                <FontAwesomeIcon icon={faAdd} className='text-red-500 text-[18px]' />
                             </div>
                             Deposit
                         </button>
-                    </a> */}
+                    </a>
                     <a href='/withdraw' className='no-underline'>
-                        <button className="flex flex-col items-center justify-center text-[12px] text-[#880808] font-medium ">
-                            <div className="flex flex-col items-center justify-center text-[12px] text-[#880808] border-1 border-[#880808] rounded-full h-10 w-10">
-                                <FontAwesomeIcon icon={faMoneyBillTransfer} className='text-[#880808] text-[18px]' />
+                        <button className="flex flex-col items-center justify-center text-[12px] text-red-500 font-medium ">
+                            <div className="flex flex-col items-center justify-center text-[12px] text-red-500 border-1 border-red-500 rounded-full h-10 w-10">
+                                <FontAwesomeIcon icon={faMoneyBillTransfer} className='text-red-500 text-[18px]' />
                             </div>
                             Withdraw
                         </button>
                     </a>
                 </div>
-                <div className='flex flex-col items-center w-full border rounded-md p-4 mt-4'>
-                    <div className='flex flex-row items-center justify-between w-full'>
+                <div className='flex flex-row items-center justify-between w-full border rounded-md p-4 mt-4'>
+                    <div className='flex flex-col items-center justify-between w-full'>
                         <div className='flex flex-col items-center'>
                             <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalDeposit}</span>
                             <span className='text-[12px] font-bold text-black'>Total Deposit</span>
                         </div>
-                        <div className='flex flex-col items-center'>
+                        <div className='flex flex-col items-center mt-2'>
                             <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalInvest}</span>
                             <span className='text-[12px] font-bold text-black'>Total Invest</span>
                         </div>
                     </div>
-                    <div className='flex flex-col items-center'>
-                        <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalWithdraw}</span>
-                        <span className='text-[12px] font-bold text-black'>Total Withdraw</span>
+                    <div className='flex flex-col items-center justify-between w-full'>
+                        <div className='flex flex-col items-center'>
+                            <span className='text-[14px] font-bold text-[#347928]'>{userData?.deposit}</span>
+                            <span className='text-[12px] font-bold text-black'>Deposit Balance</span>
+                        </div>
+                        <div className='flex flex-col items-center mt-2'>
+                            <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalWithdraw}</span>
+                            <span className='text-[12px] font-bold text-black'>Total Withdraw</span>
+                        </div>
                     </div>
                 </div>
                 {/* Investment Offers Section */}
@@ -156,7 +162,7 @@ function Home() {
                                 <div className='w-[30%] flex flex-col items-center justify-end h-full'>
                                     <span className='text-[#347928] font-bold text-[11px]'>{offer.name}</span>
                                     <span className='text-[#347928] font-bold text-[10px]'>Daily Profit:{offer.profit}</span>
-                                    <span className='bg-[#77B254] p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full'>{offer.lock ? 'Locked' : 'Open Now'}</span>
+                                    <span className={`bg-${offer.lock ? 'red-500' : '[#77B254]'} p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full`}>{offer.lock ? 'Locked' : 'Open Now'}</span>
                                 </div>
                             </div>
                         ))}

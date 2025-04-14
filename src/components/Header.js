@@ -25,7 +25,7 @@ function Header() {
       const response2 = await fetch(`${BaseUrl}/notifications/receiver/${id}`);
       const json = await response.json();
       const json2 = await response2.json();
-      const unseen = json2.filter((item)=>item.seen === false);
+      const unseen = json2.filter((item) => item.seen === false);
       setNotifications(unseen.length);
       if (response.ok) {
         setUserData(json);
@@ -94,8 +94,8 @@ function Header() {
             <span className='text-md font-medium w-[70%] text-center'>Profile</span>
           </div>
           <nav className="sidebar-nav flex flex-col items-center w-full">
-            <div className='flex flex-row items-center w-full pb-2'>
-              <FontAwesomeIcon icon={faUser} className='text-gray-300 border overflow-hidden rounded-full h-[30px] w-[30px]' />
+            <div onClick={() => navigate('/profile')} className='flex flex-row items-center w-full pb-2'>
+              {userData?.profileImage ? <img src={userData?.profileImage} alt='preview' className='text-gray-300 border overflow-hidden rounded-full h-[30px] w-[30px]' /> : <FontAwesomeIcon icon={faUser} className='text-gray-300 border overflow-hidden rounded-full h-[30px] w-[30px]' />}
               {loading ? <LoadingSpinner /> : <div className='flex flex-col ml-2 w-[80%]'>
                 <span className='text-[#347928] text-[14px] font-bold'>Welcom Back!</span>
                 <span className='text-gray-500 text-[10px] font-medium'>{userData?.name}</span>
@@ -107,7 +107,7 @@ function Header() {
             <a href="/notification" className='font-medium' onClick={closeSidebar}>Notifications</a>
             <a href="/withdraw-history" className='font-medium' onClick={closeSidebar}>Withdrawal Records</a>
             <a href="/invite" className='font-medium' onClick={closeSidebar}>Invite a friend</a>
-            <a href="/team-detail" className='font-medium' onClick={closeSidebar}>Contact us</a>
+            <a href="/contact" className='font-medium' onClick={closeSidebar}>Contact us</a>
             <div className='flex flex-row items-center w-full mt-[5%]'>
               <button onClick={handleLogout} className="bg-gradient-to-r from-[#3F7D58] to-[#90C67C] text-white px-4 py-2 border-none rounded-md text-[12px] font-medium w-[80px]">
                 Logout

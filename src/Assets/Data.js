@@ -144,7 +144,6 @@ export const investmentOffers = [
         days: 30,
         profit: 700,
         amount: 10000,
-        lock: true
     },
     {
         id: 7,
