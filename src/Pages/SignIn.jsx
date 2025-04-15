@@ -48,6 +48,7 @@ function SignIn() {
                 throw new Error(data.message || 'Registration failed!');
             }
             await localStorage.setItem('id', data.data.id);
+            await localStorage.setItem('showChart', true);
             // console.log('data:', data, data.data.id);
             await navigate('/');
             console.log('Server Response:', data);

@@ -37,7 +37,7 @@ export default function Notification() {
         navigate(-1);
     }
 
-    const updateNotification = async (id, path) => {
+    const updateNotification = async (id) => {
         try {
             setLoading(true);
             const response = await fetch(`${BaseUrl}/notifications/${id}`, {
@@ -54,7 +54,37 @@ export default function Notification() {
 
             if (response.ok) {
                 console.log('User updated successfully:', data);
-                navigate(path);
+                fetchData();
+            } else {
+                console.error('Error updating user:', data.message);
+            }
+        } catch (error) {
+            console.error('Request failed:', error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    const allSeen = async () => {
+        try {
+            setLoading(true);
+            const receiverId = localStorage.getItem('id');
+            const response = await fetch(`${BaseUrl}/notifications/all-seen/${receiverId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    seen: true,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('User updated successfully:', data);
+                fetchData();
             } else {
                 console.error('Error updating user:', data.message);
             }
@@ -75,11 +105,32 @@ export default function Notification() {
                     </button>
                     <span className="text-[16px] font-semibold ml-2 w-[80%] line-clamp-1 text-center">Notifications</span>
                 </div>
-                {notifications.map((item) => (<div onClick={() => updateNotification(item._id, item.path)} className={`flex flex-col items-center w-[90%] ${item.seen ? '' : 'shadow-md'} border bg-white rounded-md mt-2 p-2`}>
-                    <span className="text-black text-[14px] font-bold w-full">{item?.heading}</span>
-                    <span className="text-black text-[12px] font-regular w-full">{item?.subHeading}</span>
-                    <span className="text-black text-[10px] font-regular w-full text-right">{item.timestamp && timeAgo(item.timestamp)}</span>
-                </div>))}
+                <button type="button" onClick={allSeen} className="text-black text-[14px] font-medium w-[90%] text-right underline">All Seen</button>
+                {notifications.filter((item) => item.seen === false).length === 0 ? (
+                    <div className="w-[90%] text-center text-gray-500 mt-[50%]">
+                        No new notifications
+                    </div>
+                ) : (
+                    notifications
+                        .filter((item) => item.seen === false)
+                        .map((item) => (
+                            <div
+                                key={item._id}
+                                onClick={() => updateNotification(item._id)}
+                                className="flex flex-col items-center w-[90%] border bg-white rounded-md mt-2 p-2 shadow-md"
+                            >
+                                <span className="text-black text-[14px] font-bold w-full">
+                                    {item?.heading}
+                                </span>
+                                <span className="text-black text-[12px] font-regular w-full">
+                                    {item?.subHeading}
+                                </span>
+                                <span className="text-black text-[10px] font-regular w-full text-right">
+                                    {item.timestamp && timeAgo(item.timestamp)}
+                                </span>
+                            </div>
+                        ))
+                )}
             </div>}
         </>
     )
