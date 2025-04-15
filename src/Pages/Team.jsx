@@ -85,11 +85,11 @@ export default function Team() {
                         </tr>
                         <tr class="hover:bg-gray-200 text-[12px]">
                             <td class="border border-gray-300 px-4 py-1">Level 02</td>
-                            <td class="border border-gray-300 px-4 py-1">3%</td>
+                            <td class="border border-gray-300 px-4 py-1">3.5%</td>
                         </tr>
                         <tr class="bg-gray-100 hover:bg-gray-200 text-[12px]">
                             <td class="border border-gray-300 px-4 py-1">Level 03</td>
-                            <td class="border border-gray-300 px-4 py-1">1%</td>
+                            <td class="border border-gray-300 px-4 py-1">1.5%</td>
                         </tr>
                     </tbody>
                 </table>

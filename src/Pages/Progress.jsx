@@ -4,7 +4,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Progress() {
 
-    const [selectedLevel, setSelectedLevel] = React.useState(1);
+    const [selectedLevel, setSelectedLevel] = React.useState(2);
     const [planData, setPlanData] = useState([]);
     const [peopleInvested, setPeopleInvested] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -62,6 +62,7 @@ export default function Progress() {
             setLoading(false);
         }
     }
+    
 
     useEffect(() => {
         fetchPlans();

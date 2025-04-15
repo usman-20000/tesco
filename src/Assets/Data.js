@@ -104,6 +104,7 @@ export const investmentOffers = [
         days: 5,
         profit: 10,
         amount: 0,
+        lock: false
     },
     {
         id: 2,
@@ -112,6 +113,7 @@ export const investmentOffers = [
         days: 30,
         profit: 32,
         amount: 500,
+        lock: false
     },
     {
         id: 3,
@@ -120,6 +122,7 @@ export const investmentOffers = [
         days: 30,
         profit: 100,
         amount: 1500,
+        lock: false
     },
     {
         id: 4,
@@ -128,6 +131,7 @@ export const investmentOffers = [
         days: 30,
         profit: 205,
         amount: 3000,
+        lock: false
     },
     {
         id: 5,
@@ -136,6 +140,7 @@ export const investmentOffers = [
         days: 30,
         profit: 340,
         amount: 5000,
+        lock: false
     },
     {
         id: 6,
@@ -144,6 +149,7 @@ export const investmentOffers = [
         days: 30,
         profit: 700,
         amount: 10000,
+        lock: false
     },
     {
         id: 7,
@@ -209,3 +215,28 @@ export const investmentOffers = [
         lock: true
     },
 ];
+
+
+export const pageTitles = {
+    "/deposit": "Deposit",
+    "/withdraw": "Withdraw",
+    "/withdraw-sucess": "Withdraw Success",
+    "/invite": "Invite",
+    "/my-team": "My Team",
+    "/team-detail": "Team Detail",
+    "/detail": "Detail",
+    "/invest-success": "Invest Success",
+    "/progress": "Progress",
+    "/notification": "Notification",
+    "/dashboard": "Dashboard",
+    "/deposit-history": "Deposit History",
+    "/withdraw-history": "Withdraw History",
+    "/profile": "Profile",
+    "/edit-password": "Edit Password",
+    "/about": "About",
+    "/contact": "Contact",
+    "/offers": "Offers",
+    "/transactions": "Transactions",
+    "/transaction-detail/:id": "Transaction Detail",
+  };
+  

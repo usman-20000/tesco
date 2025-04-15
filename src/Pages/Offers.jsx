@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { BaseUrl, fetchData, investmentOffers } from '../Assets/Data';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-function Home() {
+function Offers() {
     const navigate = useNavigate();
 
-    const [showBalance, setShowBalance] = React.useState(false);
     const [userData, setUserData] = React.useState({});
     const [loading, setLoading] = React.useState(false);
     const [peopleInvested, setPeopleInvested] = React.useState({});
@@ -50,38 +49,6 @@ function Home() {
         fetchUserData();
     }, [fetchUserData]);
 
-    const toggleVisibility = (setter) => {
-        setter((prev) => !prev);
-    };
-
-    const renderBalanceCard = (label, value, isHidden, toggleVisibility) => (
-        <div className="user-info flex flex-col items-center p-2 border border-gray-600 rounded-md w-[70%]">
-            <p className="text-black text-[12px]">{label}</p>
-            <div className="flex flex-row items-center justify-between">
-                <h3 className="text-[#347928] font-bold text-[14px]">
-                    PKR: {isHidden ? '****' : value}
-                </h3>
-                <button onClick={toggleVisibility} className="ml-2">
-                    <FontAwesomeIcon
-                        icon={isHidden ? faEyeSlash : faEye}
-                        className="text-[#347928] text-[14px]"
-                    />
-                </button>
-            </div>
-        </div>
-    );
-
-    const renderActionButton = (label, icon, link) => (
-        <a href={link} className="no-underline">
-            <button className="flex flex-col items-center justify-center text-[12px] text-red-500 font-medium">
-                <div className="flex flex-col items-center justify-center border-1 border-red-500 rounded-full h-10 w-10">
-                    <FontAwesomeIcon icon={icon} className="text-red-500 text-[18px]" />
-                </div>
-                {label}
-            </button>
-        </a>
-    );
-
     const renderInvestmentOffer = (offer) => {
         const peopleCount =
             peopleInvested[`plan${offer.id}`] || '0';
@@ -121,20 +88,20 @@ function Home() {
             {loading ? (
                 <LoadingSpinner />
             ) : (
-                <div className="home-container md:mb-4 mb-[25%] md:mt-[5%] mt-[15%]">
-                    <div className="flex flex-row items-center justify-center mb-4 w-[70%] mt-4">
+                <div className="flex flex-col items-center mt-4 w-[90%] pb-[20%] ml-[5%]">
+                    {/* <div className="flex flex-row items-center justify-center mb-4 w-[70%] mt-4">
                         {renderBalanceCard(
                             'Total Balance',
                             userData?.balance,
                             !showBalance,
                             () => toggleVisibility(setShowBalance)
                         )}
-                    </div>
-                    <div className="action-buttons flex flex-row items-center justify-center gap-4">
+                    </div> */}
+                    {/* <div className="action-buttons flex flex-row items-center justify-center gap-4">
                         {renderActionButton('Deposit', faAdd, '/deposit')}
                         {renderActionButton('Withdraw', faMoneyBillTransfer, '/withdraw')}
-                    </div>
-                    <div className="flex flex-row items-center justify-between w-full border rounded-md p-4 mt-4">
+                    </div> */}
+                    {/* <div className="flex flex-row items-center justify-between w-full border rounded-md p-4 mt-4">
                         <div className="flex flex-col items-center justify-between w-full">
                             <div className="flex flex-col items-center">
                                 <span className="text-[14px] font-bold text-[#347928]">
@@ -171,22 +138,19 @@ function Home() {
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="investment-offers">
                         <div className="flex flex-row items-center justify-between mb-4">
                             <span className="text-[14px] font-medium text-black">
                                 Investment Offers
                             </span>
-                            <a href='/offers' className="no-underline">
                             <span className="text-[14px] font-bold text-[#347928]">
                                 All Offers
                             </span>
-                            </a>
                         </div>
                         <div className="offers-grid">
                             {investmentOffers
                                 .filter((offer) => !(freePlan && offer.id.toString() === '1'))
-                                .filter((offer) => offer.lock === false)
                                 .map(renderInvestmentOffer)}
                         </div>
                     </div>
@@ -196,4 +160,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Offers;

@@ -2,7 +2,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BaseUrl, formatDate } from "../Assets/Data";
+import { BaseUrl, formatDate, timeAgo } from "../Assets/Data";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Notification() {
@@ -78,7 +78,7 @@ export default function Notification() {
                 {notifications.map((item) => (<div onClick={() => updateNotification(item._id, item.path)} className={`flex flex-col items-center w-[90%] ${item.seen ? '' : 'shadow-md'} border bg-white rounded-md mt-2 p-2`}>
                     <span className="text-black text-[14px] font-bold w-full">{item?.heading}</span>
                     <span className="text-black text-[12px] font-regular w-full">{item?.subHeading}</span>
-                    <span className="text-black text-[10px] font-regular w-full text-right">{item.timestamp && formatDate(item.timestamp)}</span>
+                    <span className="text-black text-[10px] font-regular w-full text-right">{item.timestamp && timeAgo(item.timestamp)}</span>
                 </div>))}
             </div>}
         </>

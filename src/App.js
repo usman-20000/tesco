@@ -28,15 +28,22 @@ import Profile from './Pages/Profile';
 import EditPassword from './Pages/EditPassword';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
+import { pageTitles } from './Assets/Data';
+import Offers from './Pages/Offers';
+import Transactions from './Pages/Transactions';
+import TransactionDetail from './Pages/TransactionDetail';
 
 function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress", "/dashboard"];
+  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress", "/dashboard", "/offers", "/transactions"];
   const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail", "/progress"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
+
+
+
 
   return (
     <>
@@ -68,6 +75,9 @@ function App() {
             <Route path="/edit-password/:email" element={<EditPassword />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/offers" element={<Offers />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/transaction-detail/:type/:id" element={<TransactionDetail />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -41,42 +41,48 @@ export default function Profile() {
     }, []);
 
 
-    const handleImageChange = async (e) => {
+    const handleProfileUpdate = async () => {
+        if (!name && (typeof selectedImage === 'string' || !selectedImage)) {
+            alert('No changes to update');
+            return;
+        }
 
-        e.preventDefault();
         setUploading(true);
+        let imageUrl = typeof selectedImage === 'string' ? selectedImage : null;
 
-        if (!selectedImage) {
-            alert('Please select an image to upload');
-            setUploading(false);
-            return;
+        // Upload image if it's a File object
+        if (selectedImage && typeof selectedImage !== 'string') {
+            try {
+                let form = new FormData();
+                form.append('file', selectedImage);
+                form.append('upload_preset', 'tesco_app');
+                form.append('cloud_name', 'da9jxjnlv');
+
+                const cloudinaryResponse = await fetch(CLOUDINARY_URL, {
+                    method: 'POST',
+                    body: form,
+                });
+
+                const cloudinaryData = await cloudinaryResponse.json();
+                if (!cloudinaryData.secure_url) {
+                    alert('Image upload failed. Please try again.');
+                    setUploading(false);
+                    return;
+                }
+
+                imageUrl = cloudinaryData.secure_url;
+            } catch (error) {
+                console.error('Image upload error:', error);
+                alert('Image upload failed. Try again.');
+                setUploading(false);
+                return;
+            }
         }
 
-
-        let form = new FormData();
-        form.append('file', selectedImage);
-        form.append('upload_preset', 'tesco_app');
-        form.append('cloud_name', 'da9jxjnlv');
-
-        const cloudinaryResponse = await fetch(CLOUDINARY_URL, {
-            method: 'POST',
-            body: form,
-        });
-
-        const cloudinaryData = await cloudinaryResponse.json();
-        console.log('Cloudinary Response:', cloudinaryData.secure_url);
-
-        if (!cloudinaryData.secure_url) {
-            alert('Image upload failed. Please try again.');
-            return;
-        }
-        let url1 = cloudinaryData.secure_url;
-
-        console.log('images:', url1);
-
-        const data = {
-            profileImage: url1,
-        };
+        // Prepare final payload
+        const payload = {};
+        if (name) payload.name = name;
+        if (imageUrl) payload.profileImage = imageUrl;
 
         try {
             const response = await fetch(`${BaseUrl}/register/${userData?.email}`, {
@@ -84,59 +90,24 @@ export default function Profile() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
-
+                body: JSON.stringify(payload),
             });
 
             const result = await response.json();
-            console.log('Category added:', result);
             if (response.ok) {
-                alert('Profile image updated successfully!');
-                setSelectedImage(null);
+                alert('Profile updated successfully!');
+                setName('');
+                setSelectedImage(imageUrl);
                 setUserData(result);
+                setSquad(false); // hide name input
             }
         } catch (error) {
-            console.error('Error submitting category:', error);
-            alert('Failed to submit category');
+            console.error('Error updating profile:', error);
+            alert('Failed to update profile.');
         } finally {
             setUploading(false);
         }
     };
-
-    const handleSquad = async (e) => {
-
-        if (!name) {
-            alert('Please enter a name to update');
-            return;
-        }
-        const data = {
-            name: name,
-        };
-
-        try {
-            const response = await fetch(`${BaseUrl}/register/${userData?.email}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-
-            });
-
-            const result = await response.json();
-            console.log('Category added:', result);
-            if (response.ok) {
-                alert('Profile name updated successfully!');
-                setName('');
-                setUserData(result);
-            }
-        } catch (error) {
-            console.error('Error submitting category:', error);
-            alert('Failed to submit category');
-        } finally {
-            setUploading(false);
-        }
-    }
 
 
     return (
@@ -163,7 +134,6 @@ export default function Profile() {
                                 <FontAwesomeIcon icon={faUser} className="text-gray-300 border overflow-hidden rounded-full h-[40px] w-[40px]" />
                             )}
                             <span className="text-[12px] text-gray-500 font-semibold mt-2 w-[90%] text-center leading-[16px]">{userData?.name}</span>
-                            {typeof selectedImage !== 'string' && selectedImage !== null && <button onClick={handleImageChange} type="button" className="text-[12px] text-blue-400 font-normal mt-2 underline">Change</button>}
                         </div>
                         <div className="flex flex-col items-end w-[70%] mr-[5%]">
                             <div className="flex flex-row items-center justify-end w-full mt-2">
@@ -184,7 +154,7 @@ export default function Profile() {
                                 <FontAwesomeIcon icon={faChevronRight} className="h-[10px] w-[10px] text-gray-500" />
                             </div>
                             <div onClick={() => setSquad(!squad)} className="flex flex-row items-center justify-end w-full mt-4">
-                                <span className="text-gray-500 text-[14px] font-medium mr-4">Squad</span>
+                                <span className="text-gray-500 text-[14px] font-medium mr-4">Change Name</span>
                                 <FontAwesomeIcon icon={faChevronRight} className="h-[10px] w-[10px] text-gray-500" />
                             </div>
                         </div>
@@ -200,7 +170,6 @@ export default function Profile() {
                             onChange={handleChangeName}
                             required
                         />
-                        <button type="button" onClick={handleSquad} className="w-[90%] bg-[#347928] h-[35px] rounded-md flex items-center justify-center text-white font-semibold mb-2">Update Name</button>
                     </div>}
                     <div className="flex flex-row items-center justify-start w-full bg-[#347928] py-2 px-3 rounded-b-xl">
                         <span className="text-white text-[18px] font-bold ml-[5%]">Security Information</span>
@@ -241,6 +210,7 @@ export default function Profile() {
                         <FontAwesomeIcon icon={faChevronRight} className="h-[10px] w-[10px] text-gray-500" />
                     </div>
                 </div>
+                {uploading ? <LoadingSpinner /> : <button type="button" onClick={handleProfileUpdate} className="w-[90%] bg-[#347928] h-[35px] rounded-md flex items-center justify-center text-white font-semibold mb-2 mt-4">Update</button>}
             </div>}
         </>
     )

@@ -1,14 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faChevronLeft, faCircleInfo, faCircleQuestion, faQuestion, faQuestionCircle, faUser } from '@fortawesome/free-solid-svg-icons';
-import { BaseUrl } from '../Assets/Data';
+import { BaseUrl, pageTitles } from '../Assets/Data';
 import LoadingSpinner from './LoadingSpinner';
 
-function Header() {
+function Header(){
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+
+  let path = location.pathname;
+  if (path.startsWith("/deposit/")) path = "/deposit";
+  if (path.startsWith("/withdraw/")) path = "/withdraw";
+  if (path.startsWith("/withdraw-sucess/")) path = "/withdraw-sucess";
+  if (path.startsWith("/invite/")) path = "/invite";
+  if (path.startsWith("/my-team/")) path = "/my-team";
+  if (path.startsWith("/team-detail/")) path = "/team-detail";
+  if (path.startsWith("/detail/")) path = "/detail";
+  if (path.startsWith("/invest-success/")) path = "/invest-success";
+  if (path.startsWith("/progress/")) path = "/progress";
+  if (path.startsWith("/notification/")) path = "/notification";
+  if (path.startsWith("/dashboard/")) path = "/dashboard";
+  if (path.startsWith("/deposit-history/")) path = "/deposit-history";
+  if (path.startsWith("/withdraw-history/")) path = "/withdraw-history";
+  if (path.startsWith("/profile/")) path = "/profile";
+  if (path.startsWith("/edit-password/")) path = "/edit-password";
+  if (path.startsWith("/about/")) path = "/about";
+  if (path.startsWith("/contact/")) path = "/contact";
+  const title = pageTitles[path] || "";
+
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -20,7 +43,7 @@ function Header() {
   const fetchUserData = async () => {
     const id = localStorage.getItem('id');
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await fetch(`${BaseUrl}/register/${id}`);
       const response2 = await fetch(`${BaseUrl}/notifications/receiver/${id}`);
       const json = await response.json();
@@ -74,7 +97,7 @@ function Header() {
           </button>
 
           {/* Center: Dashboard Text */}
-          <h1 className="header-title ml-[20px] mt-2 w-[160px] text-left">{userData?.name}</h1>
+          <h1 className="header-title ml-[20px] mt-2 w-[160px] text-left">{title || userData?.name}</h1>
         </div>
 
         {/* Right: Help Button */}
@@ -94,7 +117,7 @@ function Header() {
             <span className='text-md font-medium w-[70%] text-center'>Profile</span>
           </div>
           <nav className="sidebar-nav flex flex-col items-center w-full">
-            <div onClick={() => navigate('/profile')} className='flex flex-row items-center w-full pb-2'>
+            <div className='flex flex-row items-center w-full pb-2'>
               {userData?.profileImage ? <img src={userData?.profileImage} alt='preview' className='text-gray-300 border overflow-hidden rounded-full h-[30px] w-[30px]' /> : <FontAwesomeIcon icon={faUser} className='text-gray-300 border overflow-hidden rounded-full h-[30px] w-[30px]' />}
               {loading ? <LoadingSpinner /> : <div className='flex flex-col ml-2 w-[80%]'>
                 <span className='text-[#347928] text-[14px] font-bold'>Welcom Back!</span>
@@ -102,12 +125,13 @@ function Header() {
               </div>}
             </div>
             <a href="/" className='mt-4 font-medium' onClick={closeSidebar}>Home</a>
-            <a href="/deposit" className='font-medium' onClick={closeSidebar}>Deposits</a>
-            <a href="/deposit-history" className='font-medium' onClick={closeSidebar}>Deposit History</a>
-            <a href="/notification" className='font-medium' onClick={closeSidebar}>Notifications</a>
-            <a href="/withdraw-history" className='font-medium' onClick={closeSidebar}>Withdrawal Records</a>
+            {/* <a href="/deposit" className='font-medium' onClick={closeSidebar}>Deposits</a> */}
+            {/* <a href="/deposit-history" className='font-medium' onClick={closeSidebar}>Deposit History</a> */}
+            <a href="/transactions" className='font-medium' onClick={closeSidebar}>Transactions</a>
+            {/* <a href="/withdraw-history" className='font-medium' onClick={closeSidebar}>Withdrawal Records</a> */}
             <a href="/invite" className='font-medium' onClick={closeSidebar}>Invite a friend</a>
             <a href="/contact" className='font-medium' onClick={closeSidebar}>Contact us</a>
+            <a href="/profile" className='font-medium' onClick={closeSidebar}>Profile</a>
             <div className='flex flex-row items-center w-full mt-[5%]'>
               <button onClick={handleLogout} className="bg-gradient-to-r from-[#3F7D58] to-[#90C67C] text-white px-4 py-2 border-none rounded-md text-[12px] font-medium w-[80px]">
                 Logout
