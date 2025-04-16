@@ -3,7 +3,7 @@ import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faEye, faEyeSlash, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { BaseUrl, fetchData, investmentOffers } from '../Assets/Data';
+import { BaseUrl, fetchData } from '../Assets/Data';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Modal from '../components/ModalChart';
 
@@ -16,6 +16,7 @@ function Home() {
     const [peopleInvested, setPeopleInvested] = useState({});
     const [freePlan, setFreePlan] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [investmentOffers, setInvestmentOffers] = useState([]);
     const showChart = localStorage.getItem('showChart');
     const [openModal, setOpenModal] = useState(showChart === 'true' ? true : false);
     const itemsPerPage = 5; // Number of offers to show per page
@@ -40,12 +41,17 @@ function Home() {
                 fetch(`${BaseUrl}/myplan/${id}`),
                 fetch(`${BaseUrl}/details/${id}`),
             ]);
+            const inPlan = await fetch(`${BaseUrl}/plan`);
+
+            const investplan = await inPlan.json();
             const plans = await plansResponse.json();
             const details = await detailsResponse.json();
+            console.log('aray:', investplan);
 
             const hasFreePlan = plans.some((item) => item.planId === '1');
             setFreePlan(hasFreePlan);
             setPeopleInvested(details);
+            setInvestmentOffers(investplan);
         } catch (error) {
             console.error('Error fetching plans:', error);
         }
@@ -119,13 +125,11 @@ function Home() {
         );
     };
 
-    const paginatedOffers = investmentOffers
-        .filter((offer) => !(freePlan && offer.id.toString() === '1'))
-        .filter((offer) => offer.lock === false)
-        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const paginatedOffers = investmentOffers?.filter((offer) => !(freePlan && offer.id.toString() === '1'))
+        .filter((offer) => !offer.lock)
 
     const totalPages = Math.ceil(
-        investmentOffers.filter((offer) => !(freePlan && offer.id.toString() === '1') && !offer.lock).length /
+        investmentOffers?.filter((offer) => !(freePlan && offer.id.toString() === '1') && !offer.lock).length /
         itemsPerPage
     );
 

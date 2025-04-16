@@ -1,6 +1,6 @@
 
-export const BaseUrl = "https://tesco-api.vercel.app";
-// export const BaseUrl = "http://localhost:4000";
+// export const BaseUrl = "https://tesco-api.vercel.app";
+export const BaseUrl = "http://localhost:4000";
 
 const id = localStorage.getItem('id');
 
@@ -85,7 +85,7 @@ export const maskString = (str) => {
     }
     return str; // If the string is 4 characters or fewer, just return it as is
 };
-export const daysDifference = ( end) => {
+export const daysDifference = (end) => {
     const date1 = new Date();
     const date2 = new Date(end);
 
@@ -238,5 +238,5 @@ export const pageTitles = {
     "/offers": "Offers",
     "/transactions": "Transactions",
     "/transaction-detail/:id": "Transaction Detail",
-  };
-  
+    "/promo-code": "Promo Code"
+};

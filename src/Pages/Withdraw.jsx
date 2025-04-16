@@ -207,7 +207,7 @@ export default function Withdraw() {
             } else {
                 const error = await res.text();
                 console.error('Error creating withdrawal:', error);
-                alert('Failed to create withdrawal');
+                alert('Failed to create withdrawal', error);
             }
         } catch (err) {
             console.error('Error:', err);

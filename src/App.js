@@ -32,12 +32,14 @@ import { pageTitles } from './Assets/Data';
 import Offers from './Pages/Offers';
 import Transactions from './Pages/Transactions';
 import TransactionDetail from './Pages/TransactionDetail';
+import AdminPanel from './Pages/AdminPanel';
+import PromoCode from './Pages/PromoCode';
 
 function App() {
 
 
   const location = useLocation();
-  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress", "/dashboard", "/offers", "/transactions"];
+  const showHeaderRoutes = ["/home", "/", "/deposit", "/withdraw", "/invite", "/my-team", "/team-detail", "/progress", "/dashboard", "/offers", "/transactions", "/promo-code"];
   const showBottomNavRoutes = ["/home", "/", "/invite", "/my-team", "/team-detail", "/progress"];
   const shouldShowBottomNav = showBottomNavRoutes.includes(location.pathname);
   const shouldShowHeader = showHeaderRoutes.includes(location.pathname);
@@ -78,6 +80,8 @@ function App() {
             <Route path="/offers" element={<Offers />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/transaction-detail/:type/:id" element={<TransactionDetail />} />
+            <Route path="/admin-panel" element={<AdminPanel />} />
+            <Route path="/promo-code" element={<PromoCode />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

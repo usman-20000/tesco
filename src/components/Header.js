@@ -125,13 +125,11 @@ function Header(){
               </div>}
             </div>
             <a href="/" className='mt-4 font-medium' onClick={closeSidebar}>Home</a>
-            {/* <a href="/deposit" className='font-medium' onClick={closeSidebar}>Deposits</a> */}
-            {/* <a href="/deposit-history" className='font-medium' onClick={closeSidebar}>Deposit History</a> */}
             <a href="/transactions" className='font-medium' onClick={closeSidebar}>Transactions</a>
-            {/* <a href="/withdraw-history" className='font-medium' onClick={closeSidebar}>Withdrawal Records</a> */}
             <a href="/invite" className='font-medium' onClick={closeSidebar}>Invite a friend</a>
             <a href="/contact" className='font-medium' onClick={closeSidebar}>Contact us</a>
             <a href="/profile" className='font-medium' onClick={closeSidebar}>Profile</a>
+            <a href="/promo-code" className='font-medium' onClick={closeSidebar}>Promo Code</a>
             <div className='flex flex-row items-center w-full mt-[5%]'>
               <button onClick={handleLogout} className="bg-gradient-to-r from-[#3F7D58] to-[#90C67C] text-white px-4 py-2 border-none rounded-md text-[12px] font-medium w-[80px]">
                 Logout

@@ -68,11 +68,13 @@ function SignUp() {
             });
 
             const data = await response.json();
-            alert('Registration successful!');
-            if (!response.ok) {
+            if (response.ok) {
+                alert('Registration successful!');
+                navigate('/login');
+            } else {
+                alert(data.message || 'Registration failed!');
                 throw new Error(data.message || 'Registration failed!');
             }
-            navigate('/login');
             console.log('Server Response:', data);
         } catch (error) {
             console.error('Error:', error);
