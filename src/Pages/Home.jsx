@@ -5,7 +5,7 @@ import { faAdd, faEye, faEyeSlash, faMoneyBillTransfer } from '@fortawesome/free
 import { useNavigate } from 'react-router-dom';
 import { BaseUrl, fetchData, investmentOffers } from '../Assets/Data';
 import LoadingSpinner from '../components/LoadingSpinner';
-import Modal from '../components/ModalShow';
+import Modal from '../components/ModalChart';
 
 function Home() {
     const navigate = useNavigate();
@@ -154,6 +154,28 @@ function Home() {
                             {renderActionButton('Deposit', faAdd, '/deposit')}
                             {renderActionButton('Withdraw', faMoneyBillTransfer, '/withdraw')}
                         </div>
+                        <div className='flex flex-row items-center justify-between w-full border rounded-md p-4 mt-4'>
+                            <div className='flex flex-col items-center justify-center w-[50%]'>
+                                <div className='flex flex-col items-center'>
+                                    <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalDeposit}</span>
+                                    <span className='text-[12px] font-bold text-black'>Total Deposit</span>
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalInvest}</span>
+                                    <span className='text-[12px] font-bold text-black'>Total Invest</span>
+                                </div>
+                            </div>
+                            <div className='flex flex-col items-center justify-center w-[50%]'>
+                                <div className='flex flex-col items-center'>
+                                    <span className='text-[14px] font-bold text-[#347928]'>{userData?.deposit}</span>
+                                    <span className='text-[12px] font-bold text-black'>Deposit Balance</span>
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <span className='text-[14px] font-bold text-[#347928]'>{userData?.totalWithdraw}</span>
+                                    <span className='text-[12px] font-bold text-black'>Total Withdraw</span>
+                                </div>
+                            </div>
+                        </div>
                         <div className="investment-offers">
                             <div className="flex flex-row items-center justify-between mb-4">
                                 <span className="text-[14px] font-medium text-black">Investment Offers</span>
@@ -165,13 +187,19 @@ function Home() {
                                 {paginatedOffers.map(renderInvestmentOffer)}
                             </div>
                         </div>
+                        <span className="pt-[10%] text-[12px] font-bold w-[90%] text-black text-center">
+                            (Requirement Plans🚨)
+                        </span>
+                        <span className="pt-[2%] text-[12px] font-medium w-[90%] text-black text-center">
+                            There will be only open plan show on the dashboard that you can work on. And the plan that is closed by the company right now can see up on locked Plans.
+                        </span>
                     </div>
                 </div>
             )}
-            <Modal isOpen={openModal} onClose={() =>{ localStorage.setItem('showChart', false); setOpenModal(false); }}>
-                <div className="max-w-xl flex flex-col items-center mx-auto p-4">
-                    <h2 className="text-xl font-bold text-center mb-4 text-gray-800">ضروری ہدایات!!!</h2>
-                    <ol className="list-decimal list-inside space-y-2 text-right text-gray-700 text-xs font-medium">
+            <Modal isOpen={openModal} onClose={() => { localStorage.setItem('showChart', false); setOpenModal(false); }}>
+                <div className="max-w-xl flex flex-col items-center mx-auto p-2">
+                    <h2 className="text-xl font-bold text-center mb-4 text-[#347928]">ضروری ہدایات</h2>
+                    <ol dir="rtl" className="list-decimal space-y-2 text-right text-black text-sm font-[JameelNoori] ps-2 rtl:ps-0 rtl:pe-5">
                         <li>رقم نکالنے کی درخواست دینے کا ٹائم صبح 10 بجے سے لے کر شام 5 بجے تک ہے۔</li>
                         <li>آپکے بنک اکاؤنٹ میں رقم 12 گھنٹے سے 24 گھنٹے تک پہنچے گی،اگر اس دوران نا پہنچے تو ایڈمنز سے رابطہ کریں۔</li>
                         <li>کم سے کم رقم 100 نکالی جا سکتی ہے اس سے کم نہیں۔</li>
@@ -182,6 +210,7 @@ function Home() {
                         <li>ہماری پالیسیز کی خلاف ورزی پر آپکا اکاؤنٹ بلاک کر دیا جائے گا اور کسی بھی صورت نہیں کھولا جائے گا۔</li>
                         <li>تمام معلومات اور بروقت اسپورٹ کے لئے ایپ میں آفیشل گروپ کا لنگ موجود ہے. اسے لازمی جوائن کر لیں۔</li>
                     </ol>
+
                     <p className="mt-4 text-center text-black font-semibold">Thank you Tesco Community</p>
                     <button type="button" className="flex flex-row items-center justify-center w-full h-[50px] rounded-md bg-[#347928] mt-2 mb-2">
                         <span className="text-white text-[14px] font-medium ml-2 text-center w-full">Chat with us</span>

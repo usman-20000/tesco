@@ -8,6 +8,9 @@ module.exports = {
       ...defaultTheme.screens,
     },
     extend: {
+      fontFamily: {
+        urdu: ['JameelNoori', 'serif'],
+      },
       height: {
         100: '30rem',
       },

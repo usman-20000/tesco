@@ -89,56 +89,6 @@ function Offers() {
                 <LoadingSpinner />
             ) : (
                 <div className="flex flex-col items-center mt-4 w-[90%] pb-[20%] ml-[5%]">
-                    {/* <div className="flex flex-row items-center justify-center mb-4 w-[70%] mt-4">
-                        {renderBalanceCard(
-                            'Total Balance',
-                            userData?.balance,
-                            !showBalance,
-                            () => toggleVisibility(setShowBalance)
-                        )}
-                    </div> */}
-                    {/* <div className="action-buttons flex flex-row items-center justify-center gap-4">
-                        {renderActionButton('Deposit', faAdd, '/deposit')}
-                        {renderActionButton('Withdraw', faMoneyBillTransfer, '/withdraw')}
-                    </div> */}
-                    {/* <div className="flex flex-row items-center justify-between w-full border rounded-md p-4 mt-4">
-                        <div className="flex flex-col items-center justify-between w-full">
-                            <div className="flex flex-col items-center">
-                                <span className="text-[14px] font-bold text-[#347928]">
-                                    {userData?.totalDeposit}
-                                </span>
-                                <span className="text-[12px] font-bold text-black">
-                                    Total Deposit
-                                </span>
-                            </div>
-                            <div className="flex flex-col items-center mt-2">
-                                <span className="text-[14px] font-bold text-[#347928]">
-                                    {userData?.totalInvest}
-                                </span>
-                                <span className="text-[12px] font-bold text-black">
-                                    Total Invest
-                                </span>
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-center justify-between w-full">
-                            <div className="flex flex-col items-center">
-                                <span className="text-[14px] font-bold text-[#347928]">
-                                    {userData?.deposit}
-                                </span>
-                                <span className="text-[12px] font-bold text-black">
-                                    Deposit Balance
-                                </span>
-                            </div>
-                            <div className="flex flex-col items-center mt-2">
-                                <span className="text-[14px] font-bold text-[#347928]">
-                                    {userData?.totalWithdraw}
-                                </span>
-                                <span className="text-[12px] font-bold text-black">
-                                    Total Withdraw
-                                </span>
-                            </div>
-                        </div>
-                    </div> */}
                     <div className="investment-offers">
                         <div className="flex flex-row items-center justify-between mb-4">
                             <span className="text-[14px] font-medium text-black">
@@ -151,6 +101,7 @@ function Offers() {
                         <div className="offers-grid">
                             {investmentOffers
                                 .filter((offer) => !(freePlan && offer.id.toString() === '1'))
+                                .filter((offer) => offer.lock === true)
                                 .map(renderInvestmentOffer)}
                         </div>
                     </div>
