@@ -6,7 +6,7 @@ import { faBell, faChevronLeft, faCircleInfo, faCircleQuestion, faQuestion, faQu
 import { BaseUrl, pageTitles } from '../Assets/Data';
 import LoadingSpinner from './LoadingSpinner';
 
-function Header(){
+function Header() {
 
   const navigate = useNavigate();
   const location = useLocation();
