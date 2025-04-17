@@ -82,7 +82,7 @@ export default function PromoCode() {
     const fetchTodayClaims = async () => {
         try {
             setLoadingClaims(true);
-            const response = await fetch(`${BaseUrl}/promo/today-claims`);
+            const response = await fetch(`${BaseUrl}/promo/today-claim`);
             const data = await response.json();
 
             if (response.ok) {
@@ -118,30 +118,19 @@ export default function PromoCode() {
                 ) : todayClaims.length === 0 ? (
                     <p className="text-gray-500 text-center">No claims found for today.</p>
                 ) : (
-                    <div className="overflow-x-auto">
+                    <div className="flex flex-col items-center w-[90%]">
                         <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
                             <thead>
                                 <tr className="text-center text-[12px] text-white bg-[#347928]">
-                                    <th className="p-1 border-b text-center">Promo Code</th>
-                                    <th className="p-1 border-b text-center">Amount</th>
-                                    <th className="p-1 border-b text-center">Claimed By</th>
+                                    <th className="p-1 border-b">Win Amount</th>
+                                    <th className="p-1 border-b">Claimed By</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {todayClaims.map((promo, idx) => (
+                                {todayClaims?.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-gray-50 transition">
-                                        <td className="p-1 border">{promo.code}</td>
-                                        <td className="p-1 border">${promo.amount}</td>
-                                        <td className="p-1 border">
-                                            <ul className="list-disc pl-4">
-                                                {promo.claimBy.map((claim) => (
-                                                    <li key={claim._id}>
-                                                        {claim.name} -{" "}
-                                                        {new Date(claim.claimedAt).toLocaleTimeString()}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </td>
+                                        <td className="p-1 border text-center">${item.amount}</td>
+                                        <td className="p-1 border text-center">{item.name}</td>
                                     </tr>
                                 ))}
                             </tbody>

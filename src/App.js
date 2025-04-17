@@ -83,7 +83,7 @@ function App() {
             <Route path="/transaction-detail/:type/:id" element={<TransactionDetail />} />
             <Route path="/admin-panel" element={<AdminPanel />} />
             <Route path="/promo-code" element={<PromoCode />} />
-            <Route path="/user-detail" element={<UserDetails />} /> 
+            <Route path="/user-detail/:id" element={<UserDetails />} /> 
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
