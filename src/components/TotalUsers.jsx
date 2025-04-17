@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BaseUrl, fetchData } from "../Assets/Data";
 import LoadingSpinner from "./LoadingSpinner";
+import { useNavigate } from "react-router-dom";
 
 const TotalUsers = () => {
 
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -16,7 +18,7 @@ const TotalUsers = () => {
             setUsers(json);
         } catch (e) {
             console.log('error fetching data...', e);
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
@@ -24,41 +26,6 @@ const TotalUsers = () => {
     useEffect(() => {
         fetchUserData();
     }, []);
-
-    const updateBan = async (email, status) => {
-        try {
-            let banData = true;
-            if (status === true) {
-                banData = false;
-            } else {
-                banData = true;
-            }
-            const response = await fetch(`${BaseUrl}/register/${email}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ban: banData,
-                }),
-            });
-
-            const json = await response.json();
-            if (!response.ok) throw new Error(json.message);
-
-            if (response.ok) {
-                alert('status updated successfully!');
-                setUsers(prev =>
-                    prev.map(user =>
-                        user.email === email ? { ...user, ban: banData } : user
-                    )
-                );
-            }
-        } catch (error) {
-            console.error('Reset Password Error:', error);
-            alert('Failed to update status');
-        }
-    };
 
 
     return (
@@ -89,15 +56,14 @@ const TotalUsers = () => {
                                         <td className="p-3 border-b">{user.name}</td>
                                         <td className="p-3 border-b">{user.email}</td>
                                         <td className="p-3 border-b">
-                                            {new Date(user.joinedDate).toLocaleDateString()}
+                                            {new Date(user.createdAt).toLocaleDateString()}
                                         </td>
                                         <td className="p-3 border-b">${user.balance.toFixed(2)}</td>
                                         <td className="p-3 border-b">
                                             <button
-                                                onClick={() => updateBan(user.email, user.ban)}
-                                                className={`${user.ban ? 'bg-green-500' : 'bg-red-500'} text-white px-3 py-1 rounded hover:bg-red-600 transition`}
-                                            >
-                                                {user.ban ? 'Un-Ban' : 'Ban'}
+                                                onClick={() => { navigate(`/user-detail/${user._id}`) }}
+                                                className={`bg-blue-500 text-white px-3 py-1 rounded hover:bg-red-600 transition border`}>
+                                                Details
                                             </button>
                                         </td>
                                     </tr>

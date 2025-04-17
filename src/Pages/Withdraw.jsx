@@ -187,6 +187,8 @@ export default function Withdraw() {
         const data = {
             sender: id,
             receiver: 'admin',
+            name: formData.accountHolderName,
+            bank: formData.bankName,
             amount: withdrawAmount,
         };
 

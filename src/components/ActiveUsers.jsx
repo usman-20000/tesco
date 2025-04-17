@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { BaseUrl, fetchData } from "../Assets/Data";
 import LoadingSpinner from "./LoadingSpinner";
+import { useNavigate } from "react-router-dom";
 
 const ActiveUsers = () => {
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const fetchUserData = async () => {
         try {
@@ -96,11 +98,10 @@ const ActiveUsers = () => {
                                         </td>
                                         <td className="p-3 border-b">${user.balance.toFixed(2)}</td>
                                         <td className="p-3 border-b">
-                                            <button
-                                                onClick={() => updateBan(user.email, user.ban)}
-                                                className={`${user.ban ? 'bg-green-500' : 'bg-red-500'} text-white px-3 py-1 rounded hover:bg-red-600 transition`}
-                                            >
-                                                {user.ban ? 'Un-Ban' : 'Ban'}
+                                        <button
+                                                onClick={() => { navigate(`/user-detail/${user._id}`) }}
+                                                className={`bg-blue-500 text-white px-3 py-1 rounded hover:bg-red-600 transition border`}>
+                                                Details
                                             </button>
                                         </td>
                                     </tr>

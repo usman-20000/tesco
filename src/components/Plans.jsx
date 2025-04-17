@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import '../Pages/Home.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faEye, faEyeSlash, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { BaseUrl, fetchData } from '../Assets/Data';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -9,11 +7,12 @@ import LoadingSpinner from '../components/LoadingSpinner';
 function Plans() {
     const navigate = useNavigate();
 
-    const [userData, setUserData] = React.useState({});
-    const [loading, setLoading] = React.useState(false);
-    const [investmentOffers, setInvestmentOffers] = React.useState([]);
-    const [peopleInvested, setPeopleInvested] = React.useState({});
-    const [freePlan, setFreePlan] = React.useState(false);
+    const [userData, setUserData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [investmentOffers, setInvestmentOffers] = useState([]);
+    const [peopleInvested, setPeopleInvested] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState(null);
 
     const fetchUserData = useCallback(async () => {
         setLoading(true);
@@ -49,52 +48,74 @@ function Plans() {
         fetchUserData();
     }, [fetchUserData]);
 
+    const openEditModal = (plan) => {
+        setSelectedPlan(plan);
+        setIsModalOpen(true);
+    };
+
+    const closeEditModal = () => {
+        setSelectedPlan(null);
+        setIsModalOpen(false);
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${BaseUrl}/plan/${selectedPlan._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedPlan),
+            });
+
+            if (!response.ok) throw new Error('Failed to update plan');
+
+            const updatedPlan = await response.json();
+            setInvestmentOffers((prev) =>
+                prev.map((plan) => (plan._id === updatedPlan._id ? updatedPlan : plan))
+            );
+            alert('Plan updated successfully!');
+            closeEditModal();
+        } catch (error) {
+            console.error('Error updating plan:', error);
+            alert('Failed to update plan.');
+        }
+    };
+
+    const toggleLockStatus = async () => {
+        try {
+            const response = await fetch(`${BaseUrl}/plan/${selectedPlan._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ lock: !selectedPlan.lock }),
+            });
+
+            if (!response.ok) throw new Error('Failed to update lock status');
+
+            const updatedPlan = await response.json();
+            setSelectedPlan((prev) => ({ ...prev, lock: updatedPlan.lock }));
+            setInvestmentOffers((prev) =>
+                prev.map((plan) => (plan._id === updatedPlan._id ? updatedPlan : plan))
+            );
+            alert('Lock status updated successfully!');
+        } catch (error) {
+            console.error('Error updating lock status:', error);
+            alert('Failed to update lock status.');
+        }
+    };
 
     const renderInvestmentOffer = (offer) => {
-
         const peopleCount = peopleInvested[`plan${offer.id}`] || '0';
-
-        
-            const handleToggle = async (e, offerId, status) => {
-                e.stopPropagation(); // Prevent card click
-                try {
-                 
-                    const response = await fetch(`${BaseUrl}/plan/${offerId}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                           lock: !status,
-                        }),
-                    });
-        
-                    const json = await response.json();
-                    if (!response.ok) throw new Error(json.message);
-        
-                    if (response.ok) {
-                        alert('status updated successfully!');
-                        setInvestmentOffers(prev =>
-                            prev.map(user =>
-                                user._id === offerId ? { ...user, lock: !user.lock } : user
-                            )
-                        );
-                    }
-                } catch (error) {
-                    console.error('Reset Password Error:', error);
-                    alert('Failed to update status');
-                }
-            };
-
 
         return (
             <div
                 key={offer.id}
-                onClick={() => !offer.lock && navigate(`/invest/${offer.id}`)}
                 className={`offer-card ${offer.lock ? '' : 'shadow-md'} relative`}
             >
                 <img src={offer.image} alt={offer.name} className="offer-image" />
-
                 <div className="w-[50%] flex flex-col items-left">
                     <h2>Investment: {offer.amount}</h2>
                     <p className="pb-0 mb-0">Expire Plan: {offer.days}D</p>
@@ -102,25 +123,21 @@ function Plans() {
                         {peopleCount} people invested
                     </span>
                 </div>
-
                 <div className="w-[30%] flex flex-col items-center justify-end h-full">
                     <span className="text-[#347928] font-bold text-[11px]">{offer.name}</span>
                     <span className="text-[#347928] font-bold text-[10px]">
                         Daily Profit: {offer.profit}
                     </span>
                     <button
-                        onClick={(e) => handleToggle(e, offer._id, offer.lock)}
-                        className={`${offer.lock ? 'bg-red-500' : 'bg-[#77B254]'
-                            } p-1 pl-2 pr-2 text-[8px] text-white rounded-md rounded-br-sm w-full`}
+                        onClick={() => openEditModal(offer)}
+                        className="bg-blue-500 text-white text-[10px] px-2 py-1 rounded-md mt-2"
                     >
-                        {offer.lock ? 'Locked' : 'Open Now'}
+                        Edit
                     </button>
                 </div>
             </div>
         );
     };
-
-
 
     return (
         <>
@@ -140,6 +157,90 @@ function Plans() {
                         <div className="offers-grid">
                             {investmentOffers.map(renderInvestmentOffer)}
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Modal */}
+            {isModalOpen && selectedPlan && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] md:w-[50%]">
+                        <h2 className="text-2xl font-bold mb-4">Edit Plan</h2>
+                        <form onSubmit={handleEditSubmit}>
+                            <div className="mb-4">
+                                <label className="block text-lg font-medium mb-2">Name</label>
+                                <input
+                                    type="text"
+                                    value={selectedPlan.name}
+                                    onChange={(e) =>
+                                        setSelectedPlan({ ...selectedPlan, name: e.target.value })
+                                    }
+                                    className="border border-gray-300 p-2 w-full rounded-md"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-lg font-medium mb-2">Amount</label>
+                                <input
+                                    type="number"
+                                    value={selectedPlan.amount}
+                                    onChange={(e) =>
+                                        setSelectedPlan({ ...selectedPlan, amount: e.target.value })
+                                    }
+                                    className="border border-gray-300 p-2 w-full rounded-md"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-lg font-medium mb-2">Days</label>
+                                <input
+                                    type="number"
+                                    value={selectedPlan.days}
+                                    onChange={(e) =>
+                                        setSelectedPlan({ ...selectedPlan, days: e.target.value })
+                                    }
+                                    className="border border-gray-300 p-2 w-full rounded-md"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-lg font-medium mb-2">Profit</label>
+                                <input
+                                    type="number"
+                                    value={selectedPlan.profit}
+                                    onChange={(e) =>
+                                        setSelectedPlan({ ...selectedPlan, profit: e.target.value })
+                                    }
+                                    className="border border-gray-300 p-2 w-full rounded-md"
+                                />
+                            </div>
+                            <div className="flex justify-between items-center mb-4">
+                                <span className="text-lg font-medium">
+                                    Status: {selectedPlan.lock ? 'Locked' : 'Open'}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={toggleLockStatus}
+                                    className={`${
+                                        selectedPlan.lock ? 'bg-red-500' : 'bg-green-500'
+                                    } text-white px-4 py-2 rounded-md`}
+                                >
+                                    {selectedPlan.lock ? 'Unlock' : 'Lock'}
+                                </button>
+                            </div>
+                            <div className="flex justify-end gap-4">
+                                <button
+                                    type="button"
+                                    onClick={closeEditModal}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}

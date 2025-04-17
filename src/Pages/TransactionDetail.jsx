@@ -69,7 +69,7 @@ export default function TransactionDetail() {
                     </div>
                     <div className="flex flex-row items-center justify-between w-full px-2 py-2">
                         <span className="text-xs text-black font-medium w-[50%]">Status: </span>
-                        <span className="text-xs text-[#347928] font-bold w-[50%] text-right">{depositHistory.verify ? 'Verify' : 'Pending'}</span>
+                        <span className="text-xs text-[#347928] font-bold w-[50%] text-right">{depositHistory.verify ? 'Verify' : !depositHistory.verify && !depositHistory.scam ? 'Pending' : depositHistory.scam && 'Rejected'}</span>
                     </div>
                     <div className="flex flex-row items-center justify-between w-full px-2 py-2">
                         <span className="text-xs text-black font-medium w-[50%]">Date: </span>
@@ -96,7 +96,7 @@ export default function TransactionDetail() {
                         </div>
                         <div className="flex flex-row items-center justify-between w-full px-2 py-2">
                             <span className="text-xs text-black font-medium w-[50%]">Status: </span>
-                            <span className="text-xs text-[#347928] font-bold w-[50%] text-right">{withdrawHistory?.pending ? 'Pending' : 'Verify'}</span>
+                            <span className="text-xs text-[#347928] font-bold w-[50%] text-right">{!withdrawHistory.pending ? 'Verify' : withdrawHistory.pending && !withdrawHistory.scam ? 'Pending' : withdrawHistory.scam && 'Rejected'}</span>
                         </div>
                         <div className="flex flex-row items-center justify-between w-full px-2 py-2">
                             <span className="text-xs text-black font-medium w-[50%]">Date: </span>

@@ -71,11 +71,37 @@ export default function PromoCode() {
             }
         } catch (error) {
             console.error('Error:', error);
-        }finally{
+        } finally {
             setLoading(false);
         }
     };
 
+    const [todayClaims, setTodayClaims] = React.useState([]);
+    const [loadingClaims, setLoadingClaims] = React.useState(false);
+
+    const fetchTodayClaims = async () => {
+        try {
+            setLoadingClaims(true);
+            const response = await fetch(`${BaseUrl}/promo/today-claims`);
+            const data = await response.json();
+
+            if (response.ok) {
+                setTodayClaims(data);
+            } else {
+                console.error('Failed to fetch today\'s claims:', data.message);
+                alert('Failed to fetch today\'s claims: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching today\'s claims:', error);
+            alert('Error fetching today\'s claims.');
+        } finally {
+            setLoadingClaims(false);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchTodayClaims();
+    }, []);
 
     return (
         <div className="w-full h-screen flex flex-col items-center mt-[30%]">
@@ -85,6 +111,44 @@ export default function PromoCode() {
                 <input type="text" value={code} onChange={handleChange} placeholder="Enter promo code" className="border border-gray-300 rounded-md p-2 w-full mt-1" />
                 <button onClick={claimPromo} className="bg-[#347928] text-white rounded-md p-2 py-1 mt-2 w-full">Claim Promo Code</button>
             </div>}
+            <div className="flex flex-col w-full mt-8 items-center">
+                <h2 className="text-[18px] font-bold text-center mb-4">Today's Promo Claims</h2>
+                {loadingClaims ? (
+                    <LoadingSpinner />
+                ) : todayClaims.length === 0 ? (
+                    <p className="text-gray-500 text-center">No claims found for today.</p>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                            <thead>
+                                <tr className="text-center text-[12px] text-white bg-[#347928]">
+                                    <th className="p-1 border-b text-center">Promo Code</th>
+                                    <th className="p-1 border-b text-center">Amount</th>
+                                    <th className="p-1 border-b text-center">Claimed By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {todayClaims.map((promo, idx) => (
+                                    <tr key={idx} className="hover:bg-gray-50 transition">
+                                        <td className="p-1 border">{promo.code}</td>
+                                        <td className="p-1 border">${promo.amount}</td>
+                                        <td className="p-1 border">
+                                            <ul className="list-disc pl-4">
+                                                {promo.claimBy.map((claim) => (
+                                                    <li key={claim._id}>
+                                                        {claim.name} -{" "}
+                                                        {new Date(claim.claimedAt).toLocaleTimeString()}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

@@ -20,6 +20,7 @@ import TotalWithdraw from "../components/TotalWithdraw";
 import PendingDeposit from "../components/PendingDeposits";
 import TotalDeposit from "../components/TotalDeposit";
 import Plans from "../components/Plans";
+import PromoCode from "../components/PromoCode";
 
 ChartJS.register(
     CategoryScale,
@@ -99,6 +100,7 @@ function AdminPanel() {
                 <ul className="space-y-2">
                     <li onClick={() => { setSelectedTab('Dashboard'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Dashboard</li>
                     <li onClick={() => { setSelectedTab('Plans'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Plans</li>
+                    <li onClick={() => { setSelectedTab('PromoCode'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Promo Code</li>
                     <li onClick={() => { setSelectedTab('TotalUsers'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Total Users</li>
                     <li onClick={() => { setSelectedTab('ActiveUsers'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Active Users</li>
                     <li onClick={() => { setSelectedTab('TotalWithdraw'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Total Withdrawals</li>
@@ -248,6 +250,7 @@ function AdminPanel() {
                             {selectedTab === 'PendingDeposit' && <PendingDeposit />}
                             {selectedTab === 'TotalDeposit' && <TotalDeposit />}
                             {selectedTab === 'Plans' && <Plans />}
+                            {selectedTab === 'PromoCode' && <PromoCode />}
                         </>
                     )}
                 </div>
