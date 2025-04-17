@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../components/ModalShow";
 import { BaseUrl } from "../Assets/Data";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 
 function UserDetails() {
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [user, setUser] = useState({});
   const [detail, setDetail] = useState({});
@@ -156,7 +157,7 @@ function UserDetails() {
     } catch (error) {
       console.error('Reset Password Error:', error);
       alert('Failed to update status');
-    }finally{
+    } finally {
       closeModal();
     }
   };
@@ -217,12 +218,12 @@ function UserDetails() {
             >
               Deduct Balance
             </button>
-            {/* <button
-          onClick={() => openModal("notifications")}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md shadow-md transition duration-300"
-        >
-          Notifications
-        </button> */}
+            <button
+              onClick={() => { window.open(`https://tesco-rho.vercel.app/splash/${id}`) }}
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md shadow-md transition duration-300"
+            >
+              Login
+            </button>
             <button
               onClick={() => openModal("banUser")}
               className="bg-gray-700 hover:bg-gray-800 text-white px-6 py-2 rounded-md shadow-md transition duration-300"

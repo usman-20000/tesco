@@ -21,6 +21,11 @@ import PendingDeposit from "../components/PendingDeposits";
 import TotalDeposit from "../components/TotalDeposit";
 import Plans from "../components/Plans";
 import PromoCode from "../components/PromoCode";
+import RejectedWithdraw from "../components/RejectedWithdraw";
+import ApprovedWithdraw from "../components/ApprovedWithdraw";
+import RejectedDeposit from "../components/RejectedDeposit";
+import ApprovedDeposit from "../components/ApprovedDeposit";
+import UnverifiedUsers from "../components/UnverifiedUser";
 
 ChartJS.register(
     CategoryScale,
@@ -57,7 +62,11 @@ function AdminPanel() {
             const depositsResponse = await fetch(`${BaseUrl}/screenshot`);
             const withdrawalsResponse = await fetch(`${BaseUrl}/withdraw`);
             const activeResponse = await fetch(`${BaseUrl}/active-users`);
+            const totalWithdrawResponse = await fetch(`${BaseUrl}/total-withdraw`);
+            const totalDepositResponse = await fetch(`${BaseUrl}/total-deposit`);
 
+            const totalWithdraw = await totalWithdrawResponse.json();
+            const totalDeposit = await totalDepositResponse.json();
             const usersData = await usersResponse.json();
             const depositsData = await depositsResponse.json();
             const activeUsers = await activeResponse.json();
@@ -71,9 +80,9 @@ function AdminPanel() {
                 totalUsers: usersData.length,
                 activeUsers: activeUsers.data.length,
                 pendingDeposits: pendingDeposits,
-                totalDeposits: depositsData.length,
+                totalDeposits: totalDeposit.totalWithdraw,
                 pendingWithdrawals: pendingWithdrawals,
-                totalWithdrawals: withdrawalsData.length,
+                totalWithdrawals: totalWithdraw.totalWithdraw,
                 unverifiedUsers: unverifiedUsers,
             });
         } catch (error) {
@@ -85,35 +94,266 @@ function AdminPanel() {
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    const Sidebar = () => (
-        <div
-            className={`fixed top-0 left-0 h-full bg-gray-800 text-white w-64 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-                } transition-transform duration-300 lg:translate-x-0`}
-        >
-            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
-                <h2 className="text-xl font-bold">Admin Panel</h2>
-                <button className="lg:hidden text-white" onClick={toggleSidebar}>
-                    <FontAwesomeIcon icon={faTimes} />
-                </button>
-            </div>
-            <nav className="mt-4">
-                <ul className="space-y-2">
-                    <li onClick={() => { setSelectedTab('Dashboard'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Dashboard</li>
-                    <li onClick={() => { setSelectedTab('Plans'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Plans</li>
-                    <li onClick={() => { setSelectedTab('PromoCode'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Promo Code</li>
-                    <li onClick={() => { setSelectedTab('TotalUsers'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Total Users</li>
-                    <li onClick={() => { setSelectedTab('ActiveUsers'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Active Users</li>
-                    <li onClick={() => { setSelectedTab('TotalWithdraw'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Total Withdrawals</li>
-                    <li onClick={() => { setSelectedTab('PendingWithdraw'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Pending Withdrawals</li>
-                    <li onClick={() => { setSelectedTab('TotalDeposit'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Total Deposit</li>
-                    <li onClick={() => { setSelectedTab('PendingDeposit'); setSidebarOpen(false); }} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Pending Deposit</li>
-                </ul>
-            </nav>
-        </div>
-    );
+    const Sidebar = () => {
+        const [openDropdown, setOpenDropdown] = useState(null);
 
-    const DashboardCard = ({ icon, title, value, bgColor, iconColor }) => (
+        const toggleDropdown = (dropdownName) => {
+            setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+        };
+
+        return (
+            <div
+                className={`fixed top-0 left-0 h-full bg-gray-800 text-white w-64 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+                    } transition-transform duration-300 lg:translate-x-0 overflow-scroll`}
+            >
+                <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
+                    <h2 className="text-xl font-bold">Admin Panel</h2>
+                    <button className="lg:hidden text-white" onClick={toggleSidebar}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                </div>
+                <nav className="mt-4">
+                    <ul className="space-y-2">
+                        {/* Dashboard */}
+                        <li
+                            onClick={() => {
+                                setSelectedTab("Dashboard");
+                                setSidebarOpen(false);
+                            }}
+                            className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                        >
+                            Dashboard
+                        </li>
+
+                        {/* Plans Dropdown */}
+                        <li>
+                            <div
+                                onClick={() => toggleDropdown("Plans")}
+                                className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex justify-between items-center"
+                            >
+                                <span>Plans</span>
+                                <FontAwesomeIcon
+                                    icon={openDropdown === "Plans" ? faChevronRight : faChevronRight}
+                                    className={`transform transition-transform ${openDropdown === "Plans" ? "rotate-90" : ""
+                                        }`}
+                                />
+                            </div>
+                            {openDropdown === "Plans" && (
+                                <ul className="ml-4 space-y-2">
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("Plans");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        View Plans
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+
+                        {/* Promo Code Dropdown */}
+                        <li>
+                            <div
+                                onClick={() => toggleDropdown("PromoCode")}
+                                className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex justify-between items-center"
+                            >
+                                <span>Promo Code</span>
+                                <FontAwesomeIcon
+                                    icon={openDropdown === "PromoCode" ? faChevronRight : faChevronRight}
+                                    className={`transform transition-transform ${openDropdown === "PromoCode" ? "rotate-90" : ""
+                                        }`}
+                                />
+                            </div>
+                            {openDropdown === "PromoCode" && (
+                                <ul className="ml-4 space-y-2">
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("PromoCode");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        View Promo Codes
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("AddPromoCode");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Add Promo Code
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+
+                        {/* Users Dropdown */}
+                        <li>
+                            <div
+                                onClick={() => toggleDropdown("Users")}
+                                className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex justify-between items-center"
+                            >
+                                <span>Users</span>
+                                <FontAwesomeIcon
+                                    icon={openDropdown === "Users" ? faChevronRight : faChevronRight}
+                                    className={`transform transition-transform ${openDropdown === "Users" ? "rotate-90" : ""
+                                        }`}
+                                />
+                            </div>
+                            {openDropdown === "Users" && (
+                                <ul className="ml-4 space-y-2">
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("TotalUsers");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Total Users
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("ActiveUsers");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Active Users
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("UnverifiedUser");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Unverified Users
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+
+                        {/* Withdrawals Dropdown */}
+                        <li>
+                            <div
+                                onClick={() => toggleDropdown("Withdrawals")}
+                                className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex justify-between items-center"
+                            >
+                                <span>Withdrawals</span>
+                                <FontAwesomeIcon
+                                    icon={openDropdown === "Withdrawals" ? faChevronRight : faChevronRight}
+                                    className={`transform transition-transform ${openDropdown === "Withdrawals" ? "rotate-90" : ""
+                                        }`}
+                                />
+                            </div>
+                            {openDropdown === "Withdrawals" && (
+                                <ul className="ml-4 space-y-2">
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("PendingWithdraw");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Pending Withdrawals
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("RejectedWithdraw");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Rejected Withdrawals
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("ApprovedWithdraw");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Approved Withdrawals
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("TotalWithdraw");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Total Withdrawals
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+
+                        {/* Deposits Dropdown */}
+                        <li>
+                            <div
+                                onClick={() => toggleDropdown("Deposits")}
+                                className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex justify-between items-center"
+                            >
+                                <span>Deposits</span>
+                                <FontAwesomeIcon
+                                    icon={openDropdown === "Deposits" ? faChevronRight : faChevronRight}
+                                    className={`transform transition-transform ${openDropdown === "Deposits" ? "rotate-90" : ""
+                                        }`}
+                                />
+                            </div>
+                            {openDropdown === "Deposits" && (
+                                <ul className="ml-4 space-y-2">
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("PendingDeposit");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Pending Deposits
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("RejectedDeposit");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Rejected Deposits
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("ApprovedDeposit");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Approved Deposits
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setSelectedTab("TotalDeposit");
+                                            setSidebarOpen(false);
+                                        }}
+                                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        Total Deposits
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        );
+    };
+
+    const DashboardCard = ({ icon, title, value, bgColor, iconColor, tab }) => (
         <div
+            onClick={() => { setSelectedTab(tab) }}
             className={`card p-4 flex flex-row rounded-md shadow-md transform transition-transform duration-300 hover:scale-105 items-center`}
         >
             <div className={`flex flex-col w-[10%] py-2 items-center justify-center `}>
@@ -169,6 +409,7 @@ function AdminPanel() {
                         value={dashboardData?.totalUsers}
                         bgColor="bg-red-100"
                         iconColor="text-orange-500"
+                        tab="TotalUsers"
                     />
                     <DashboardCard
                         icon={faUsers}
@@ -176,6 +417,7 @@ function AdminPanel() {
                         value={dashboardData?.activeUsers}
                         bgColor="bg-blue-100"
                         iconColor="text-blue-500"
+                        tab="ActiveUsers"
                     />
                     <DashboardCard
                         icon={faMoneyBill}
@@ -183,6 +425,7 @@ function AdminPanel() {
                         value={dashboardData?.pendingDeposits}
                         bgColor="bg-green-100"
                         iconColor="text-green-500"
+                        tab="PendingDeposit"
                     />
                     <DashboardCard
                         icon={faMoneyBill}
@@ -190,6 +433,7 @@ function AdminPanel() {
                         value={dashboardData?.totalDeposits}
                         bgColor="bg-yellow-100"
                         iconColor="text-yellow-500"
+                        tab="TotalDeposit"
                     />
                     <DashboardCard
                         icon={faMoneyBill}
@@ -197,6 +441,7 @@ function AdminPanel() {
                         value={dashboardData?.pendingWithdrawals}
                         bgColor="bg-red-100"
                         iconColor="text-red-500"
+                        tab="PendingWithdraw"
                     />
                     <DashboardCard
                         icon={faMoneyBill}
@@ -204,6 +449,7 @@ function AdminPanel() {
                         value={dashboardData?.totalWithdrawals}
                         bgColor="bg-purple-100"
                         iconColor="text-purple-500"
+                        tab="TotalWithdraw"
                     />
                     <DashboardCard
                         icon={faUsers}
@@ -211,6 +457,7 @@ function AdminPanel() {
                         value={dashboardData?.unverifiedUsers}
                         bgColor="bg-purple-100"
                         iconColor="text-pink-500"
+                        tab="UnverifiedUser"
                     />
                 </div>
 
@@ -251,6 +498,11 @@ function AdminPanel() {
                             {selectedTab === 'TotalDeposit' && <TotalDeposit />}
                             {selectedTab === 'Plans' && <Plans />}
                             {selectedTab === 'PromoCode' && <PromoCode />}
+                            {selectedTab === 'RejectedWithdraw' && <RejectedWithdraw />}
+                            {selectedTab === 'ApprovedWithdraw' && <ApprovedWithdraw />}
+                            {selectedTab === 'RejectedDeposit' && <RejectedDeposit />}
+                            {selectedTab === 'ApprovedDeposit' && <ApprovedDeposit />}
+                            {selectedTab === 'UnverifiedUser' && <UnverifiedUsers />}
                         </>
                     )}
                 </div>

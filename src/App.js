@@ -35,6 +35,7 @@ import TransactionDetail from './Pages/TransactionDetail';
 import AdminPanel from './Pages/AdminPanel';
 import PromoCode from './Pages/PromoCode';
 import UserDetails from './components/UserDetails';
+import Splash from './Pages/Splash';
 
 function App() {
 
@@ -83,8 +84,9 @@ function App() {
             <Route path="/transaction-detail/:type/:id" element={<TransactionDetail />} />
             <Route path="/admin-panel" element={<AdminPanel />} />
             <Route path="/promo-code" element={<PromoCode />} />
-            <Route path="/user-detail/:id" element={<UserDetails />} /> 
+            <Route path="/user-detail/:id" element={<UserDetails />} />
           </Route>
+          <Route path="/splash/:id" element={<Splash />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

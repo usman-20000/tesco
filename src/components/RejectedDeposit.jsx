@@ -3,7 +3,7 @@ import { BaseUrl } from "../Assets/Data";
 import Modal from "../components/ModalShow";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-export default function PendingDeposits() {
+export default function RejectedDeposit() {
     const [screenshots, setScreenshots] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,7 +15,7 @@ export default function PendingDeposits() {
             setLoading(true);
             const response = await fetch(`${BaseUrl}/screenshot`);
             const json = await response.json();
-            const pendingData = json.filter((item) => item.verify === false && item.scam === false);
+            const pendingData = json.filter((item) => item.scam);
             setScreenshots(pendingData);
         } catch (e) {
             console.log('Error fetching screenshots:', e);
@@ -30,12 +30,12 @@ export default function PendingDeposits() {
 
     const handleAccept = async () => {
         try {
-            const response = await fetch(`${BaseUrl}/verifyscreenshot/${userDetail.payerId}`, {
+            const response = await fetch(`${BaseUrl}/verifyscreenshot/${userDetail._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ amount: userDetail.amount, screenshotId: userDetail._id }),
+                body: JSON.stringify({ verify: true, scam: false }),
             });
 
             if (!response.ok) throw new Error('Failed to accept deposit');
@@ -53,12 +53,12 @@ export default function PendingDeposits() {
 
     const handleReject = async () => {
         try {
-            const response = await fetch(`${BaseUrl}/rejectscreenshot/${userDetail.payerId}`, {
+            const response = await fetch(`${BaseUrl}/screenshot/${userDetail._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ amount: userDetail.amount, screenshotId: userDetail._id }),
+                body: JSON.stringify({ verify: false, scam: true }),
             });
 
             if (!response.ok) throw new Error('Failed to reject deposit');
@@ -81,7 +81,7 @@ export default function PendingDeposits() {
                     <LoadingSpinner />
                 ) : (
                     <div className="dashboard md:w-[80%] md:ml-[20%]">
-                        <h2 className="text-2xl font-semibold mb-4">Pending Deposits</h2>
+                        <h2 className="text-2xl font-semibold mb-4">Total Deposits</h2>
                         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                             <thead>
                                 <tr className="bg-gray-100 text-left">
@@ -110,8 +110,8 @@ export default function PendingDeposits() {
                                                 {user.verify
                                                     ? 'Verified'
                                                     : user.scam
-                                                        ? 'Rejected'
-                                                        : 'Pending'}
+                                                    ? 'Rejected'
+                                                    : 'Pending'}
                                             </td>
                                             <td className="p-3 border-b">
                                                 {new Date(user.createdAt).toLocaleDateString()}
@@ -164,7 +164,7 @@ export default function PendingDeposits() {
                                 Amount: {userDetail.amount}
                             </span>
                         </div>
-                        <div className="flex justify-between mt-4 w-full">
+                        {/* <div className="flex justify-between mt-4 w-full">
                             <button
                                 onClick={handleAccept}
                                 className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
@@ -177,7 +177,7 @@ export default function PendingDeposits() {
                             >
                                 Reject
                             </button>
-                        </div>
+                        </div> */}
                         <button
                             onClick={() => setIsModalOpen(false)}
                             className="bg-gray-500 text-white px-4 py-2 rounded mt-4"

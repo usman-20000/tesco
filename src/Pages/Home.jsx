@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faEye, faEyeSlash, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BaseUrl, fetchData } from '../Assets/Data';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Modal from '../components/ModalChart';
 
 function Home() {
+
     const navigate = useNavigate();
 
     const [showBalance, setShowBalance] = useState(false);
@@ -19,6 +20,7 @@ function Home() {
     const [investmentOffers, setInvestmentOffers] = useState([]);
     const showChart = localStorage.getItem('showChart');
     const [openModal, setOpenModal] = useState(showChart === 'true' ? true : false);
+    const [reload, setReload] = useState(false);
     const itemsPerPage = 5; // Number of offers to show per page
 
     const fetchUserData = useCallback(async () => {
@@ -37,10 +39,9 @@ function Home() {
     const fetchPlans = useCallback(async () => {
         try {
             const id = localStorage.getItem('id');
-            const [plansResponse, detailsResponse] = await Promise.all([
-                fetch(`${BaseUrl}/myplan/${id}`),
-                fetch(`${BaseUrl}/details/${id}`),
-            ]);
+            const plansResponse = await fetch(`${BaseUrl}/myplan/${id}`);
+            const detailsResponse = await fetch(`${BaseUrl}/details/${id}`);
+
             const inPlan = await fetch(`${BaseUrl}/plan`);
 
             const investplan = await inPlan.json();
@@ -58,8 +59,24 @@ function Home() {
     }, []);
 
     useEffect(() => {
-        fetchUserData();
-    }, [fetchUserData]);
+        // Check if the page has already been reloaded
+        if (!localStorage.getItem('reloaded')) {
+            // Set flag in localStorage to prevent future reloads
+            localStorage.setItem('reloaded', 'true');
+            // Reload the page
+            window.location.reload();
+        }
+    }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        const timer = setTimeout(() => {
+            fetchUserData();
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
 
     const toggleVisibility = (setter) => {
         setter((prev) => !prev);

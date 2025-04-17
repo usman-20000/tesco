@@ -58,28 +58,59 @@ function Plans() {
         setIsModalOpen(false);
     };
 
+    const handleImageUpload = async (file) => {
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const response = await fetch(`${BaseUrl}/upload-image`, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) throw new Error("Failed to upload image");
+
+            const data = await response.json();
+            return data.imageUrl; // Assuming the server returns the uploaded image URL
+        } catch (error) {
+            console.error("Error uploading image:", error);
+            alert("Failed to upload image.");
+            return null;
+        }
+    };
+
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
+            let updatedImageUrl = selectedPlan.image;
+
+            // If a new image is selected, upload it
+            if (selectedPlan.newImage) {
+                const uploadedImageUrl = await handleImageUpload(selectedPlan.newImage);
+                if (uploadedImageUrl) {
+                    updatedImageUrl = uploadedImageUrl;
+                }
+            }
+
             const response = await fetch(`${BaseUrl}/plan/${selectedPlan._id}`, {
-                method: 'PATCH',
+                method: "PATCH",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(selectedPlan),
+                body: JSON.stringify({ ...selectedPlan, image: updatedImageUrl }),
             });
 
-            if (!response.ok) throw new Error('Failed to update plan');
+            if (!response.ok) throw new Error("Failed to update plan");
 
             const updatedPlan = await response.json();
             setInvestmentOffers((prev) =>
                 prev.map((plan) => (plan._id === updatedPlan._id ? updatedPlan : plan))
             );
-            alert('Plan updated successfully!');
+            alert("Plan updated successfully!");
             closeEditModal();
         } catch (error) {
-            console.error('Error updating plan:', error);
-            alert('Failed to update plan.');
+            console.error("Error updating plan:", error);
+            alert("Failed to update plan.");
         }
     };
 
@@ -106,6 +137,8 @@ function Plans() {
             alert('Failed to update lock status.');
         }
     };
+
+
 
     const renderInvestmentOffer = (offer) => {
         const peopleCount = peopleInvested[`plan${offer.id}`] || '0';
@@ -162,6 +195,7 @@ function Plans() {
             )}
 
             {/* Edit Modal */}
+            {/* Edit Modal */}
             {isModalOpen && selectedPlan && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] md:w-[50%]">
@@ -211,18 +245,35 @@ function Plans() {
                                     className="border border-gray-300 p-2 w-full rounded-md"
                                 />
                             </div>
+                            {/* <div className="mb-4">
+                                <label className="block text-lg font-medium mb-2">Image</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                        setSelectedPlan({ ...selectedPlan, newImage: e.target.files[0] })
+                                    }
+                                    className="border border-gray-300 p-2 w-full rounded-md"
+                                />
+                                {selectedPlan.image && (
+                                    <img
+                                        src={selectedPlan.image}
+                                        alt="Current Plan"
+                                        className="mt-2 w-32 h-32 object-cover rounded-md"
+                                    />
+                                )}
+                            </div> */}
                             <div className="flex justify-between items-center mb-4">
                                 <span className="text-lg font-medium">
-                                    Status: {selectedPlan.lock ? 'Locked' : 'Open'}
+                                    Status: {selectedPlan.lock ? "Locked" : "Open"}
                                 </span>
                                 <button
                                     type="button"
                                     onClick={toggleLockStatus}
-                                    className={`${
-                                        selectedPlan.lock ? 'bg-red-500' : 'bg-green-500'
-                                    } text-white px-4 py-2 rounded-md`}
+                                    className={`${selectedPlan.lock ? "bg-red-500" : "bg-green-500"
+                                        } text-white px-4 py-2 rounded-md`}
                                 >
-                                    {selectedPlan.lock ? 'Unlock' : 'Lock'}
+                                    {selectedPlan.lock ? "Unlock" : "Lock"}
                                 </button>
                             </div>
                             <div className="flex justify-end gap-4">
